@@ -1,0 +1,13 @@
+{
+  "client": {
+    "host": "localhost",
+    "delay": 5000
+  },
+  "publish": {
+    "qos": 0,
+    "retain": false
+  },
+  "subscribe": {
+    "qos": 0
+  }
+}

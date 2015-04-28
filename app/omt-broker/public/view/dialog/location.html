@@ -1,0 +1,44 @@
+<md-dialog aria-label="Location Information">
+  <md-content>
+
+    <md-title class="md-sticky-no-effect">
+      Location Information
+    </md-title>
+
+    <div layout="column">
+
+      <md-input-container>
+        <label>Code</label>
+        <input ng-model="dialog.data.code" placeholder="Insert location code"/>
+      </md-input-container>
+
+      <md-input-container>
+        <label>Name</label>
+        <input ng-model="dialog.data.name" placeholder="Insert location name"/>
+      </md-input-container>
+
+      <md-select ng-model="dialog.data.level" placeholder="Select level">
+        <md-option ng-value="level.id" ng-repeat="level in dialog.levels">
+          {{level.name}}
+        </md-option>
+      </md-select>
+
+      <md-select ng-model="dialog.data.parent" md-on-open="dialog.loadParents()" placeholder="Select parent">
+        <md-option ng-value="parent.id" ng-repeat="parent in dialog.parents">
+          {{parent.name}}
+        </md-option>
+      </md-select>
+      <p>{{dialog.data}}</p>
+    </div>
+
+  </md-content>
+  <div class="md-actions" layout="row">
+    <md-button class="md-raised md-warn" ng-click="dialog.cancel()">
+      Cancel
+    </md-button>
+    <md-button class="md-raised md-primary" ng-click="dialog.save()">
+      Save
+    </md-button>
+  </div>
+</md-dialog>
+

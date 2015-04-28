@@ -1,0 +1,65 @@
+<md-dialog aria-label="Add Track Dialog">
+  <md-content class="sticky-container">
+
+    <md-title class="md-sticky-no-effect">
+      Add Track Dialog
+    </md-title>
+
+    <div layout="column">
+
+      <md-list>
+        <md-list-item ng-repeat="filter in dialog.filters track by $index">
+          <div layout="row">
+            <p>{{filter.expression}}</p>
+            <md-select ng-model="filter.operator">
+              <md-option ng-value="operator.value" ng-repeat="operator in dialog.operators">
+                {{operator.name}}
+              </md-option>
+            </md-select>
+            <md-icon class="md-secondary" md-svg-icon="remove-circle" ng-click="dialog.removeByIndex($index)">
+            </md-icon>
+          </div>
+        </md-list-item>
+      </md-list>
+
+      <md-select ng-model="dialog.selectedType" placeholder="Select type of tracking">
+        <md-option ng-value="type.value" ng-repeat="type in dialog.types">
+          {{type.name}}
+        </md-option>
+      </md-select>
+
+      <md-select ng-show="dialog.isPeopleType()" ng-model="dialog.selectedUser" md-on-open="dialog.loadUsers()" placeholder="Select user">
+        <md-option ng-value="user.username" ng-repeat="user in dialog.users">
+          {{user.name}}
+        </md-option>
+      </md-select>
+
+      <md-select ng-show="dialog.isAreaType()" ng-model="dialog.selectedArea" md-on-open="dialog.loadAreas()" placeholder="Select area">
+        <md-option ng-value="area.code" ng-repeat="area in dialog.areas">
+          {{area.level}} &gt; {{area.name}}
+        </md-option>
+      </md-select>
+
+      <md-input-container ng-show="dialog.isManualType()">
+        <label>Filter</label>
+        <input ng-model="dialog.manualFilter" placeholder="Please insert your filter" />
+      </md-input-container>
+
+    </div>
+
+  </md-content>
+
+  <div class="md-actions" layout="row">
+    <md-button flex class="md-raised md-warn" ng-click="dialog.cancel()">
+      Cancel
+    </md-button>
+    <md-button flex class="md-raised md-primary" ng-click="dialog.add()">
+      Add
+    </md-button>
+    <md-button flex class="md-raised md-primary" ng-click="dialog.save()">
+      Save
+    </md-button>
+  </div>
+
+</md-dialog>
+

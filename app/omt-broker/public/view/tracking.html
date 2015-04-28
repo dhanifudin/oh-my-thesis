@@ -1,0 +1,71 @@
+<div ng-hide="$data.joined" flex layout="row" layout-align="center center">
+  <div layout="column" flex="50" ng-controller="LoginController as login">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h1>Connect</h1>
+      </div>
+    </md-toolbar>
+    <md-content class="md-padding md-whiteframe-z1">
+      <md-input-container flex>
+        <label>Username</label>
+        <input ng-model="$storage.username" placeholder="Please insert your username">
+      </md-input-container>
+      <div class="md-actions" layout="row" layout-sm="column" layout-align="end center">
+        <md-button class="md-raised md-warn" ng-click="login.clear()">
+          Clear
+        </md-button>
+        <md-button class="md-raised md-primary" ng-click="login.connect()">
+          Connect
+        </md-button>
+      </div>
+    </md-content>
+  </div>
+</div>
+
+<md-sidenav ng-show="$data.joined" class="md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
+  <!-- Tab Section {{{ -->
+  <div ng-controller="TabController as tab" class="tab">
+    <md-tabs class="md-accent" md-selected="tab.selectedIndex">
+      <md-tab id="tab1" aria-controls="tab1-content">
+        Track List
+      </md-tab>
+      <md-tab id="tab2" aria-controls="tab2-content">
+        Debug
+      </md-tab>
+    </md-tabs>
+    <ng-switch on="tab.selectedIndex" class="tabpanel-container">
+      <div ng-controller="TrackListController as list" role="tabpanel" id="tab1-content" ng-switch-when="0" md-swipe-left="tab.next()" md-swipe-right="tab.previous()">
+        <md-list>
+          <md-subheader class="md-no-sticky">
+            List of Tracks
+          </md-subheader>
+          <md-list-item ng-repeat="filter in $data.tracks track by $index">
+            <div layout="row">
+              <p>{{filter}}</p>
+              <md-icon class="md-secondary" md-svg-icon="remove-circle" ng-click="list.untrack($index)">
+              </md-icon>
+            </div>
+          </md-list-item>
+        </md-list>
+      </div>
+      <div role="tabpanel" id="tab2-content" ng-switch-when="1" md-swipe-left="tab.next()" md-swipe-right="tab.previous()">
+        {{$storage.username}}
+        {{$data.tracks}}
+      </div>
+    </ng-switch>
+  </div>
+  <!-- }}} Tab Section -->
+  <md-button class="md-raised md-warn" style="position: absolute; bottom: 0" ng-click="track.logout()">
+    Logout
+  </md-button>
+</md-sidenav>
+
+<md-content ng-show="$data.joined" flex id="content">
+  <leaflet center="its"></leaflet>
+  <!-- <section layout="row" layout-align="end end"> -->
+  <md-button class="md-fab btn-fab" aria-label="Track" ng-click="track.showTrackDialog($event)">
+    <md-icon md-svg-icon="add"></md-icon>
+  </md-button>
+  <!-- </section> -->
+</md-content>
+
