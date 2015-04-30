@@ -1,3 +1,15 @@
+<!-- Type of Broker {{{ -->
+# Type of Broker
+
+## Simple Broker
+  * Publish/Subscribe with loosely couple
+  * There is no idle criteria
+
+## Enhanced Broker
+  * If idle limit reached, stop publish location
+  * Broker can query client to send location
+<!-- }}} Type of Broker -->
+
 <!-- Communication Protocol {{{ -->
 # Communication Protocol
 ## Track a people

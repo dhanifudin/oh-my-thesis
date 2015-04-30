@@ -14,12 +14,6 @@ Client.prototype.connect = function(user) {
     options.client.clientId = 'droidtrack_' + user;
   }
   that.client = mqtt.connect(options.client);
-  that.client.on('connect', function() {
-    that.client.on('message', function(topic, message) {
-      that.logger.debug([topic, message].join(': '));
-      handleMessage(topic, message);
-    });
-  });
 };
 
 Client.prototype.track = function(filter) {

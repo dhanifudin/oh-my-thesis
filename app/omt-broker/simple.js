@@ -1,32 +1,46 @@
-/* vim: set foldmethod=marker: */
+var logger = require('./lib/log')('omt:simple');
+var options = require('./broker.json');
+var express = require('./lib/express');
+var mosca = require('mosca');
+var server = new mosca.Server(options.broker);
+var model = require('./lib/model')(server, options);
+var evaluator = require('./lib/evaluator')(model);
 
-/* Modules declaration {{{ */
-var broker = require('./lib/broker');
-var express = require('express');
-var http = require('http');
-var path = require('path');
-/* var debug = require('debug')('omt:app'); */
-var app = express();
-var httpServer = http.createServer(app);
-/* }}} Modules declaration */
+server.on('ready', onReady);
+server.on('clientConnected', onClientConnected);
+server.on('published', onPublished);
+server.on('subscribed', onSubscribed);
+server.on('clientDisconnected', onClientDisconnected);
 
-/* ExpressJS configuration {{{ */
-// Configure bodyparser
-var bodyParser = require('body-parser');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+express.http.listen(8000, function() {
+  server.attachHttpServer(express.http);
+  console.log('Express app is listening');
+});
 
-// Setup static page directory
-app.use(express.static(path.dirname(require.resolve('mosca')) + '/public'));
-app.use(express.static(path.join(__dirname, 'public')));
+function onReady() {
+  console.log('Simple broker is up and running');
+}
 
-// Routing
-var api = require('./routes/api');
-var location = require('./routes/location');
-app.use('/api', api);
-app.use('/api/locations', location);
-/* }}} ExpressJS configuration */
+function onClientConnected(client) {
+  model.addUser(client.id);
+}
 
-// Attach Http server into broker
-broker.attachServer(httpServer);
+function onPublished(packet, client) {
+  logger.debug([packet.topic, packet.payload].join(': '));
+  switch(packet.topic) {
+    case 'track':
+      evaluator.filter(client.id, packet.payload);
+      break;
+    case 'tracker':
+      evaluator.handleTracker(client.id, packet.payload);
+      break;
+  }
+}
 
+function onSubscribed(topic, client) {
+  console.log([topic, client].join(': '));
+}
+
+function onClientDisconnected(client) {
+  model.removeUser(client.id);
+}

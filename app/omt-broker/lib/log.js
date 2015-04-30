@@ -1,4 +1,5 @@
 var bunyan = require('bunyan');
+var util = require('util');
 
 var Log = function(namespace) {
   this.logger = bunyan.createLogger({
@@ -10,9 +11,14 @@ var Log = function(namespace) {
   this.debug = require('debug')(namespace);
 };
 
-Log.prototype.log = function(message) {
+Log.prototype.info = function(message) {
   this.logger.info(message);
 };
+
+Log.prototype.dump = function(message) {
+  var json = JSON.stringify(message, null, '  ');
+  this.debug(util.format('\n %s', json));
+}
 
 Log.prototype.verbose = function(message) {
   this.logger.info(message);

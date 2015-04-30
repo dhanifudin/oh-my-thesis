@@ -15,6 +15,11 @@ Log.prototype.info = function(message) {
   this.logger.info(message);
 };
 
+Log.prototype.dump = function(message) {
+  var json = JSON.stringify(message, null, '  ');
+  this.debug(util.format('\n %s', json));
+}
+
 module.exports = function(namespace, path) {
   return new Log(namespace, path);
 };
