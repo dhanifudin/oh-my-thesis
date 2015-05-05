@@ -1,0 +1,26 @@
+{
+  "broker": {
+    "id": "ohmytrack",
+    "stats": false,
+    "port": 1883,
+    "httpPort": 8000,
+    "schedule": 1,
+    "publishNewClient": false,
+    "subscribedNewClient": false,
+    "idle": 10,
+    "backend": {
+      "type": "mongo",
+      "url": "mongodb://localhost:27017/ohmytrack",
+      "pubsubCollection": "pubsub",
+      "mongo": {}
+    }
+  },
+  "database": {
+    "host": "localhost",
+    "user": "icub",
+    "password": "database",
+    "database": "ohmytrack",
+    "debug": false
+  }
+}
+
