@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+	xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory
+		android:title="Server Configuration"
+		>
+		<EditTextPreference
+			android:key="key_server"
+		    android:title="Server Address"
+		    android:defaultValue="@string/server_setting"
+		    />
+		<EditTextPreference
+			android:key="key_port"
+		    android:title="Port Number"
+		    android:inputType="numberSigned"
+		    android:defaultValue="@string/port_setting"
+		    />
+	</PreferenceCategory>
+	<PreferenceCategory
+		android:title="MQTT Connection"
+	    >
+		<EditTextPreference
+			android:key="key_keep_alive"
+		    android:title="Keep Alive (second)"
+		    android:inputType="numberSigned"
+		    android:defaultValue="30"
+		    />
+		<EditTextPreference
+			android:key="key_connection_timeout"
+		    android:title="Connection Timeout (second)"
+		    android:inputType="numberSigned"
+		    android:defaultValue="60"
+		    />
+	</PreferenceCategory>
+</PreferenceScreen>

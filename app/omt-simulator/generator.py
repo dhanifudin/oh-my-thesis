@@ -1,0 +1,135 @@
+#!/usr/bin/env python
+
+import sys, getopt, math, json
+import MySQLdb as mdb
+
+def get_radius(unit):
+  R = {'m': 6371000, 'km': 6371}
+  if unit in R:
+    return R[unit]
+  else:
+    return unit
+
+def get_distance(lat1, lng1, lat2, lng2, unit='m'):
+  R = get_radius(unit)
+  lat1 = math.radians(lat1)
+  lng1 = math.radians(lng1)
+  lat2 = math.radians(lat2)
+  lng2 = math.radians(lng2)
+  deltalng = lng2 - lng1
+  a = math.pow(math.cos(lat2) * math.sin(deltalng), 2) + \
+      math.pow(math.cos(lat1) * math.sin(lat2) - \
+      math.sin(lat1) * math.cos(lat2) * math.cos(deltalng), 2)
+  b = math.sin(lat1) * math.sin(lat2) + \
+      math.cos(lat1) * math.cos(lat2) * math.cos(deltalng)
+  angle = math.atan2(math.sqrt(a), b)
+
+  return angle * R
+
+def get_bearing(lat1, lng1, lat2, lng2):
+  lat1 = math.radians(lat1)
+  lng1 = math.radians(lng1)
+  lat2 = math.radians(lat2)
+  lng2 = math.radians(lng2)
+  deltalng = lng2 - lng1
+  y = math.sin(deltalng) * math.cos(lat2)
+  x = math.cos(lat1) * math.sin(lat2) - \
+    math.sin(lat1) * math.cos(lat2) * math.cos(deltalng)
+  brng = math.degrees(math.atan2(y, x))
+
+  return (brng + 360) % 360;
+
+def get_destination(lat1, lng1, bearing, d, unit='m'):
+  R = get_radius(unit)
+  lat1 = math.radians(lat1)
+  lng1 = math.radians(lng1)
+  lat2 = math.asin(
+    math.sin(lat1) * math.cos(d/R) +
+    math.cos(lat1) * math.sin(d/R) * math.cos(math.radians(bearing))
+  )
+  lng2 = lng1 + math.atan2(
+    math.sin(math.radians(bearing)) * math.sin(d/R) * math.cos(lat1),
+    math.cos(d/R) - math.sin(lat1) * math.sin(lat2)
+  );
+  return {
+    'lat': math.degrees(lat2),
+    'lng': math.degrees(lng2)
+  }
+
+def read_json(file):
+  with open('data/map/%s.json' % (file)) as infile:
+    data = json.load(infile)
+  return data
+
+def write_json(data, file):
+  with open('data/track/%s.json' % (file), 'w') as outfile:
+    json.dump(data, outfile)
+
+def get_center(code):
+  con = mdb.connect('localhost', 'icub', 'database', 'ohmytrack')
+
+  with con:
+    cur = con.cursor()
+    cur.execute("SELECT code, X(center) AS lat, Y(center) AS lng FROM location \
+      WHERE code = '%s' LIMIT 1" % (code))
+
+    rows = cur.fetchone()
+
+    if rows == None:
+      return None
+
+    desc = cur.description
+    dict = {}
+
+    for (name, value) in zip(desc, rows):
+      dict[name[0]] = value
+
+    return dict
+
+def generate(input, output):
+  result, index = [], 0
+  data = read_json(input)
+  while index < len(data['code']) - 1:
+    start = get_center(data['code'][index])
+    end = get_center(data['code'][index + 1])
+    distance = get_distance(start['lat'], start['lng'], end['lat'], end['lng'])
+    bearing = get_bearing(start['lat'], start['lng'], end['lat'], end['lng'])
+
+    # Generate position from start based on bearing
+    currentDistance = data['distance']
+    while currentDistance < distance:
+      destination = get_destination(start['lat'], start['lng'], bearing, currentDistance)
+      result.append(destination)
+      currentDistance += data['distance']
+
+    index += 1
+
+  # Write result info output file
+  write_json(result, output)
+
+def help():
+  return ''' -h help \n -i input\n -o output'''
+
+def main(argv):
+  try:
+    opts, args = getopt.getopt(argv, 'hi:o:', ['input=', 'output='])
+  except getopt.GetoptError, e:
+    print e
+    sys.exit(2)
+
+  input_file = ''
+  output_file = ''
+  for opt, arg in opts:
+    if opt == '-h':
+      print help()
+      sys.exit()
+    elif opt in ('-i', '--input'):
+      input_file = arg
+    elif opt in ('-o', '--output'):
+      output_file = arg
+
+  if '' not in (input_file, output_file):
+    generate(input_file, output_file)
+
+if __name__ == '__main__':
+  main(sys.argv[1:])

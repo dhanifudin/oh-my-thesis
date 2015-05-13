@@ -1,0 +1,24 @@
+\documentclass{article}
+\usepackage{pgfplotstable}
+\usepackage{pgfplots}
+\pagestyle{empty}
+\begin{document}
+
+\pgfplotstabletypeset{data/data.dat}
+
+\vspace{1cm}
+
+\begin{tikzpicture}
+\begin{axis}[
+  xlabel=Bytes Series,
+  ylabel=Client Values]
+  \addplot table [y=Client, x=Bytes]{data/data.dat};
+% \addlegendentry{$Q_A$ series}
+% \addplot table [y=P, x=$Q_B$]{data.dat};
+% \addlegendentry{$Q_B$ series}
+% \addplot table [y=P, x=$Q_D$]{data.dat};
+% \addlegendentry{$Q_D$ series}
+\end{axis}
+\end{tikzpicture}
+
+\end{document}

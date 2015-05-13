@@ -21,4 +21,8 @@ Generator.prototype.simple = function(input, output) {
     });
 }
 
+Generator.prototype.area = function(code1, code2, distance) {
+  var
+}
+
 module.exports = new Generator();

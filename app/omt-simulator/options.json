@@ -1,6 +1,6 @@
 {
   "client": {
-    "host": "localhost",
+    "host": "cabefile.com",
     "delay": 5000
   },
   "publish": {
@@ -9,5 +9,13 @@
   },
   "subscribe": {
     "qos": 0
+  },
+  "database": {
+    "host": "localhost",
+    "user": "icub",
+    "password": "database",
+    "database": "ohmytrack",
+    "debug": false,
+    "acquireTimeout": 1000
   }
 }

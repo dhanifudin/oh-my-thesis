@@ -1,0 +1,20 @@
+<resources>
+	<string name="app_name">Oh My Track</string>
+
+	<string name="username_text">Username</string>
+
+	<!-- Settings start -->
+	<string name="server_setting">cabefile.com</string>
+	<string name="port_setting">1883</string>
+	<!-- Settings end -->
+
+	<!-- Menu start -->
+	<string name="action_login">Login</string>
+	<string name="action_location">Location</string>
+	<string name="action_add">Add</string>
+	<string name="action_map">Map</string>
+	<string name="action_track">Track</string>
+	<string name="action_settings">Settings</string>
+	<string name="action_logout">Logout</string>
+	<!-- Menu end -->
+</resources>

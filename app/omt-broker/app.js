@@ -103,7 +103,7 @@ function onClientDisconnected(client) {
 }
 /* }}} Events handler */
 
-httpServer.listen(8000, function() {
+httpServer.listen(options.broker.httpPort, function() {
   server.attachHttpServer(httpServer);
   console.log('Express app is listening');
 });

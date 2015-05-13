@@ -7,6 +7,9 @@ Simulator.prototype.generate = function(mode, input, output) {
     case 'simple':
       generator.simple(input, output);
       break;
+    case 'area':
+      generator.area(code1, code2, distance);
+      break;
     default:
       console.log('Invalid mode');
   }
