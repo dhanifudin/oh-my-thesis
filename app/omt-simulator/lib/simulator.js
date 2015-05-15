@@ -1,19 +1,17 @@
-var generator = require('./generator');
-
 var Simulator = function() {};
 
-Simulator.prototype.generate = function(mode, input, output) {
-  switch(mode) {
-    case 'simple':
-      generator.simple(input, output);
-      break;
-    case 'area':
-      generator.area(code1, code2, distance);
-      break;
-    default:
-      console.log('Invalid mode');
-  }
-};
+/* Simulator.prototype.generate = function(mode, input, output) { */
+/*   switch(mode) { */
+/*     case 'simple': */
+/*       generator.simple(input, output); */
+/*       break; */
+/*     case 'area': */
+/*       generator.area(code1, code2, distance); */
+/*       break; */
+/*     default: */
+/*       console.log('Invalid mode'); */
+/*   } */
+/* }; */
 
 Simulator.prototype.simulate = function(mode, user, input, output) {
   switch(mode) {

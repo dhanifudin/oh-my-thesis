@@ -1,6 +1,6 @@
 {
   "client": {
-    "host": "cabefile.com",
+    "host": "localhost",
     "delay": 5000
   },
   "publish": {

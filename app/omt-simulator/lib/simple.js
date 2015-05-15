@@ -10,9 +10,13 @@ var Simple = function(user, path) {
 Simple.prototype.simulate = function(input, output) {
   var that = this;
   var client = require('./client')(this.user, output);
-  var data = require(util.format('../data/track/%s', input));
+  var data = require(util.format('../data/track/%s.json', input));
+  var userdata = require(util.format('../data/user/%s.json', this.user));
   client.connect(this.user);
   client.client.on('connect', function() {
+    userdata.tracks.forEach(function(track) {
+      client.track(track);
+    })
     client.client.on('message', function(topic, message) {
       console.log([topic, message].join(': '));
     });
