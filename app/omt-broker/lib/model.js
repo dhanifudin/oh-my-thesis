@@ -15,6 +15,7 @@ Model.prototype.addUser = function(clientId) {
       };
       if (typeof this.users[user].users === 'undefined') {
         this.users[user].users = [];
+        this.users[user].tracks = [];
       }
     }
     this.users[user].users.add(clientId);
@@ -50,11 +51,12 @@ Model.prototype.notify = function(user, code, data) {
       message.filter = data.filter;
       break;
   }
+  message = JSON.stringify(message);
   this.server.publish({
     topic: user,
-    payload: JSON.stringify(message)
+    payload: message
   });
-  logger.debug('Notify => ' + [user, code, data].join(' | '));
+  logger.debug('Notify into user: ' + user + ' message: ' + message);
 }
 
 Model.prototype.checkIdle = function(user) {
@@ -82,11 +84,15 @@ Model.prototype.getUsers = function() {
   return this.users;
 }
 
-Model.prototype.initTracks = function(user) {
-  this.users[user].tracks = [];
-}
+/* Model.prototype.initTracks = function(user) { */
+/*   this.users[user].tracks = []; */
+/* } */
 
 Model.prototype.addTrack = function(user, filter) {
+  /* if (typeof this.users[user].tracks === 'undefined') { */
+  /*   this.users[user].tracks = []; */
+  /* } */
+  logger.debug('Add ' + filter + ' into user: ' + user);
   this.users[user].tracks.add(filter);
 }
 
@@ -95,6 +101,9 @@ Model.prototype.removeTrack = function(user, filter) {
 }
 
 Model.prototype.getTracks = function(user) {
+  if (typeof this.users[user].tracks === 'undefined') {
+    this.users[user].tracks = [];
+  }
   return this.users[user].tracks;
 };
 

@@ -79,18 +79,16 @@ function onClientConnected(client) {
 
 function onPublished(packet, client) {
   logger.debug([packet.topic, packet.payload].join(': '));
-  switch(packet.topic) {
-    case 'track':
-      var user = model.getUserId(client.id);
-      if(evaluator.filter(user, packet.payload)) {
-        if (program.mode === 'enhanced') {
-          model.checkIdle(user)
-        }
-      }
-      break;
-    case 'tracker':
-      evaluator.handleTracker(client.id, packet.payload);
-      break;
+  if (typeof client !== 'undefined') {
+    var user = model.getUserId(client.id);
+    switch(packet.topic) {
+      case 'track':
+        evaluator.filter(program.mode, user, packet.payload);
+        break;
+      case 'tracker':
+        evaluator.handleTracker(user, packet.payload);
+        break;
+    }
   }
 }
 

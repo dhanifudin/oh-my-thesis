@@ -20,6 +20,22 @@ Persistence.prototype.getLevels = function(cb) {
 };
 /* }}} Level */
 
+Persistence.prototype.area = function(code, location, callback) {
+  var params = [
+    code,
+    location.lat,
+    location.lng
+  ];
+  this.execute(
+    'SELECT * FROM location WHERE code = ? \
+    AND st_contains(geo, POINT(?, ?))',
+    params,
+    function(err, rows) {
+      callback(err, rows);
+    }
+  )
+}
+
 /* Location {{{ */
 Persistence.prototype.contains = function(location, point, cb) {
   var data = [
