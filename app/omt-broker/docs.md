@@ -5,7 +5,7 @@
   * Publish/Subscribe with loosely couple
   * There is no idle criteria
 
-## Enhanced Broker
+## Adaptive Broker
   * If idle limit reached, stop publish location
   * Broker can query client to send location
 <!-- }}} Type of Broker -->
@@ -13,25 +13,23 @@
 <!-- Communication Protocol {{{ -->
 # Communication Protocol
 ## Track a people
-* channel: **tracker**
+* channel: **track**
 * type: **publish**
 * data:
 
 ```javascript
 {
-  "type": "TRACK",
   "filter": "expression"
 }
 ```
 
 ## Untrack a people
-* channel: **tracker**
+* channel: **untrack**
 * type: **publish**
 * data:
 
 ```javascript
 {
-  "type": "UNTRACK",
   "filter": "expression"
 }
 ```
@@ -39,12 +37,13 @@
 
 <!-- Update Location {{{ -->
 ## Update location
-* channel: **track**
+* channel: **location**
 * type: **publish**
 * data:
 
 ```javascript
 {
+  "code": "T/C",
   "user": "userId",
   "lat": x,
   "lng": y,
@@ -61,33 +60,58 @@
 
 ```javascript
 {
-  "code": "OK",
-  "name": "Area/Zona/Gedung",
-  "lat": 123,
-  "lng": 456,
-  "time": 1234567890
+  "code": "L",
+  "level": "<level_id>",
+  "name": "<name of nearest level>",
+  "lat": <lat>,
+  "lng": <lng>,
+  "time": <timestamp>
 }
 ```
 
-## Notif to stop publish
+## Notif for stop publish
 * channel: **userId**
 * type: **subscribe**
 * data:
 
 ```javascript
 {
-  "code": "STOP"
+  "code": "S"
 }
 ```
 
-## Notif to check
+## Notif for check protocol
 * channel: **userId**
 * type: **subscribe**
 * data:
 
 ```javascript
 {
-  "code": "CHECK"
+  "code": "C"
+}
+```
+
+## Notif for track expression
+* channel: **userId**
+* type: **subscribe**
+* data:
+
+```javascript
+{
+  "code": "T",
+  "filter": "expression"
+}
+```
+
+## Notif for untrack expression
+* channel: **userId**
+* type: **subscribe**
+* data:
+
+```javascript
+{
+  "code": "U",
+  "filter": "expression"
 }
 ```
 <!-- }}} Notification -->

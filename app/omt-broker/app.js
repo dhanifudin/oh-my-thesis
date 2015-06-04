@@ -31,15 +31,18 @@ var httpServer = http.createServer(app);
 var logger = require('./lib/log')('omt:app');
 var options = require('./broker.json');
 var mosca = require('mosca');
-var server = new mosca.Server(options.broker);
-var model = require('./lib/model')(server, options);
-var evaluator = require('./lib/evaluator')(model);
+var moscaServer = new mosca.Server(options.broker);
+var server = require('./lib/server')(moscaServer);
+var constant = require('./lib/constant');
+var broker = null;
+/* var evaluator = require('./lib/evaluator')(model); */
 /* }}} Modules declarations */
 
 /* Prompt to user {{{ */
 program
   .usage('[options] [args]')
-  .option('-m, --mode <mode>', 'Mode', /^(simple|enhanced)$/i, 'enhanced')
+  .option('-m, --mode <mode>', 'Mode', /^(simple|adaptive)$/i, 'adaptive')
+  .option('-r, --resolution', 'Enable resolution')
   .parse(process.argv);
 /* }}} Prompt to user */
 
@@ -61,47 +64,57 @@ app.use('/api/locations', location);
 /* }}} ExpressJS configuration */
 
 /* Mosca events {{{ */
-server.on('ready', onReady);
-server.on('clientConnected', onClientConnected);
-server.on('published', onPublished);
-server.on('subscribed', onSubscribed);
-server.on('clientDisconnected', onClientDisconnected);
+moscaServer.on('ready', onReady);
+moscaServer.on('clientConnected', onClientConnected);
+moscaServer.on('published', onPublished);
+moscaServer.on('subscribed', onSubscribed);
+moscaServer.on('clientDisconnected', onClientDisconnected);
 /* }}} Mosca events */
 
 /* Events handler {{{ */
 function onReady() {
+  switch(program.mode) {
+    case constant.mode.SIMPLE:
+      broker = require('./lib/simple')(moscaServer, program.resolution);
+      break;
+    case constant.mode.ADAPTIVE:
+      broker = require('./lib/adaptive')(moscaServer, program.resolution);
+      break;
+  }
   console.log('MQTT ' + program.mode + ' broker is up and running');
 }
 
 function onClientConnected(client) {
-  model.addUser(client.id);
+  server.addUser(client.id);
 }
 
 function onPublished(packet, client) {
   logger.debug([packet.topic, packet.payload].join(': '));
   if (typeof client !== 'undefined') {
-    var user = model.getUserId(client.id);
     switch(packet.topic) {
-      case 'track':
-        evaluator.filter(program.mode, user, packet.payload);
+      case constant.topic.LOCATION:
+        broker.filter(client.id, packet.payload);
         break;
-      case 'tracker':
-        evaluator.handleTracker(user, packet.payload);
+      case constant.topic.TRACK:
+        server.track(client.id, packet.payload);
+        break;
+      case constant.topic.UNTRACK:
+        server.untrack(client.id, packet.payload);
         break;
     }
   }
 }
 
 function onSubscribed(topic, client) {
-  console.log([topic, client].join(': '));
+  logger.debug([topic, client].join(': '));
 }
 
 function onClientDisconnected(client) {
-  model.removeUser(client.id);
+  server.removeUser(client.id);
 }
 /* }}} Events handler */
 
 httpServer.listen(options.broker.httpPort, function() {
-  server.attachHttpServer(httpServer);
+  moscaServer.attachHttpServer(httpServer);
   console.log('Express app is listening');
 });
