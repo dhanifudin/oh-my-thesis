@@ -1,8 +1,7 @@
 var logger = require('./log')('omt:simple');
 
-var Simple = function(moscaServer, resolution) {
-  this.server = require('./server')(moscaServer, resolution);
-  this.moscaServer = moscaServer;
+var Simple = function(server) {
+  this.server = server;
 };
 
 Simple.prototype.filter = function(clientId, payload) {
@@ -11,6 +10,6 @@ Simple.prototype.filter = function(clientId, payload) {
   });
 }
 
-module.exports = function(moscaServer, resolution) {
-  return new Simple(moscaServer, resolution);
+module.exports = function(server) {
+  return new Simple(server);
 }

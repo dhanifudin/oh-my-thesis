@@ -32,8 +32,9 @@ var logger = require('./lib/log')('omt:app');
 var options = require('./broker.json');
 var mosca = require('mosca');
 var moscaServer = new mosca.Server(options.broker);
-var server = require('./lib/server')(moscaServer);
 var constant = require('./lib/constant');
+/* var server = require('./lib/server')(moscaServer); */
+var server = null;
 var broker = null;
 /* var evaluator = require('./lib/evaluator')(model); */
 /* }}} Modules declarations */
@@ -73,12 +74,13 @@ moscaServer.on('clientDisconnected', onClientDisconnected);
 
 /* Events handler {{{ */
 function onReady() {
+  server = require('./lib/server')(moscaServer, program.resolution);
   switch(program.mode) {
     case constant.mode.SIMPLE:
-      broker = require('./lib/simple')(moscaServer, program.resolution);
+      broker = require('./lib/simple')(server);
       break;
     case constant.mode.ADAPTIVE:
-      broker = require('./lib/adaptive')(moscaServer, program.resolution);
+      broker = require('./lib/adaptive')(server);
       break;
   }
   console.log('MQTT ' + program.mode + ' broker is up and running');

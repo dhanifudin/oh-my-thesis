@@ -3,9 +3,8 @@ var schedule = require('node-schedule');
 var constant = require('./constant');
 var options = require('../broker.json');
 
-var Adaptive = function(moscaServer) {
-  this.server = require('./server')(moscaServer);
-  this.moscaServer = moscaServer;
+var Adaptive = function(server) {
+  this.server = server;
 };
 
 Adaptive.prototype.filter = function(clientId, payload) {
@@ -32,6 +31,6 @@ Adaptive.prototype.addSchedule = function(user) {
   });
 }
 
-module.exports = function(moscaServer) {
-  return new Adaptive(moscaServer);
+module.exports = function(server) {
+  return new Adaptive(server);
 }
