@@ -169,6 +169,12 @@ Server.prototype.untrack = function(clientId, payload) {
 Server.prototype.notify = function(user, code, data) {
   var message = { code: code };
   switch(code) {
+    case constant.code.LOC_OK:
+      message.user = data.user;
+      message.lat = data.lat;
+      message.lng = data.lng;
+      message.time = data.time;
+      break;
     case constant.code.TRACK_OK:
     case constant.code.UNTRACK_OK:
       message.filter = data;
