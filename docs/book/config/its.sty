@@ -1,0 +1,185 @@
+% vim: set ft=tex
+
+% Konfigurasi LaTex untuk laporan thesis sesuai dengan aturan ITS
+%
+% @author Dian Hanifuddin Subhi
+
+% Package
+\usepackage{tocbibind}
+
+\usepackage{indentfirst}
+
+\usepackage{enumitem}
+
+\usepackage{hyperref}
+    \hypersetup{
+        a4paper,
+        colorlinks=false,
+        pdfborder=0 0 0,
+        linkcolor=blue,
+        citecolor=black,
+        bookmarksopen=false,
+        bookmarksnumbered=true,
+        pdfstartview=FitH,
+        pdfview=FitH
+    }
+
+\usepackage{url}
+    \urlstyle{same}
+
+\usepackage{multirow}
+
+\usepackage{multicol}
+
+\usepackage{graphicx}
+
+\usepackage[outdir=./]{epstopdf}
+
+\usepackage{setspace}
+
+\usepackage[paper=a4paper,headheight=0pt,top=3.5cm,bottom=3cm,left=4cm,right=3cm]{geometry}
+    \pagestyle{plain}
+
+\usepackage[titles]{tocloft}
+    \setlength{\cftbeforechapskip}{0pt}
+
+\usepackage[font=footnotesize,format=plain,labelfont=bf,up,textfont=up]{caption}
+
+\usepackage{amsmath}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, positioning, calc, decorations, decorations.markings}
+\tikzstyle{decision} = [diamond, draw, aspect=2,
+    text width=4em, text badly centered, node distance=3cm, inner sep=0pt]
+\tikzstyle{block} = [rectangle, draw, node distance=2.5cm,
+    text width=8em, text centered, minimum height=4em]
+\tikzstyle{line} = [draw, -]
+\tikzstyle{arrow} = [draw, -latex]
+\tikzstyle{cloud} = [draw, ellipse, node distance=3cm,
+    text centered, minimum height=2em]
+
+\usepackage{pslatex}
+
+\usepackage{pdfpages}
+
+\usepackage{colortbl}
+
+\usepackage{float}
+    \floatplacement{figure}{H}
+    \floatplacement{table}{H}
+
+\usepackage[small,compact]{titlesec}
+\titlespacing{\section}{0ex}{1ex}{1ex}
+\titlespacing{\subsection}{0ex}{1ex}{1ex}
+\titlespacing{\subsubsection}{0pt}{0.5ex}{0ex}
+
+\usepackage{titlesec}
+\titlespacing*{\chapter}{0pt}{\baselineskip}{1em}
+\titleformat{\chapter}[display]
+    {\normalfont\large\bfseries\centering\vskip-3em}
+    {\chaptertitlename\ \thechapter\vskip-2.5em}{14pt}{\large}
+
+\titleformat*{\section}{\normalsize\bfseries}
+%\titleformat*{\subsection}{\normalsize\bfseries}
+
+\usepackage{titling}
+    \setlength{\droptitle}{-4em}
+    \addtolength{\droptitle}{-4pt}
+
+\let\oldbibliography\thebibliography
+\renewcommand{\thebibliography}[1]{%
+  \oldbibliography{#1}%
+  \setlength{\itemsep}{0pt}%
+}
+
+\setlength{\baselineskip}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\parindent}{1.5cm}
+\linespread{0.9}
+
+\usepackage{array}
+
+% New command to easier write using latex
+
+\newcommand{\inpdf}[1]{
+    \includepdf[pages=-,pagecommand={\thispagestyle{fancy}}]{#1.pdf}}
+
+\newcommand{\putpdf}[1]{\includepdf[pages=-]{#1.pdf}}
+
+\newcommand{\f}[1]{\textit{#1}}
+
+\newcommand{\bi}[1]{\textbf{\textit}}
+
+\newcommand{\bo}[1]{\textbf{#1}}
+
+\newcommand{\m}[1]{\boldmath{ \( #1 \)}}
+
+\newcommand{\mc}[1]{\boldmath{ \[ #1 \]}}
+
+\newcommand*{\leftblankpage}{%
+    \begin{center}
+        [\textit{Halaman ini sengaja dikosongkan.}]
+    \end{center}
+    \vspace{\fill}}
+    \makeatletter
+
+\renewcommand*{\cleardoublepage}{
+    \clearpage\if@twoside
+    \ifodd\c@page
+    \else
+    \leftblankpage
+    \thispagestyle{plain}
+    \newpage
+    \if@twocolumn\hbox{}\newpage\fi\fi\fi
+}
+
+\newcommand{\emptypage}{
+    \newpage
+    \thispagestyle{empty}
+    \null
+    \newpage
+}
+
+\newcommand{\plainpage}{
+    \newpage
+    \null
+    \thispagestyle{plain}
+    \newpage
+}
+
+\renewcommand*{\chapterheadstartvskip}{\vspace*{-\baselineskip}}
+\renewcommand*{\chapterheadendvskip}{\vspace{-\baselineskip}}
+
+\renewcommand\@biblabel[1]{}
+
+\newcommand{\var}[2]{\newcommand{#1}{#2}}
+
+\newcommand{\Var}[2]{\newcommand{#1}{\uppercase{#2}}}
+
+\newcommand{\addChapter}[1]{\phantomsection{} \addcontentsline{toc}{chapter}{#1}}
+
+\newcommand{\changeSize}[1]{\begingroup \begin{center} \bo{{\large #1}} \end{center} \endgroup}
+
+\newcommand{\g}{\cellcolor{gray}}
+
+% Change terms to indonesian
+
+\renewcommand{\bibname}{Daftar Pustaka}
+
+\renewcommand{\contentsname}{Daftar Isi}
+
+\renewcommand{\listfigurename}{Daftar Gambar}
+
+\renewcommand{\listtablename}{Daftar Tabel}
+
+\renewcommand{\chaptername}{BAB}
+
+\renewcommand{\figurename}{\bo{Gambar}}
+
+\renewcommand{\tablename}{\bo{Tabel}}
+
+\newcommand{\pic}{Gambar}
+
+\newcommand{\tab}{Tabel}
+
+\newcommand{\equ}{Persamaan}

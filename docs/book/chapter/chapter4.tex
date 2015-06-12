@@ -1,0 +1,102 @@
+\chapter{\babEmpat}
+
+Bab ini memaparkan bagaimana mengimplementasikan metode yang diusulkan pada bab
+sebelumnya ke dalam bentuk kode program, mengimplementasikan ide dari penelitian
+ini yang dievaluasi dalam \testbed~serta hasil yang didapat dievaluasi dan
+dianalisa dari percobaan yang telah dilakukan berdasarkan beberapa skenario.
+
+% Uji Coba {{{ %
+\section{Uji Coba}
+
+% Lingkungan Uji Coba {{{ %
+\subsection{Lingkungan Uji Coba}
+
+Metode yang diusulkan dievaluasi dalam lingkungan \testbed~yang dibangun
+sendiri. \Testbed~yang dibangun merupakan komunikasi \server~dan \client.
+\Client~dibagi menjadi dua macam, yaitu: \publiser~\client~dan
+\subscriber~\client. \Testbed~dibangun dalam lingkungan pemrograman \nodejs.
+
+Sedangkan spesifikasi perangkat keras dideskripsikan sebagai berikut.
+Spesifikasi pada server, \processor~Intel(R) Xeon(R) CPU E5-2630L 2.4GHz, RAM
+(\ram) 512Mb, Swap 1GB dengan sistem operasi CentOS 6.6 yang divirtualisasikan
+oleh KVM pada Digital Ocean. Sedangkan untuk spesifikasi pada client,
+\processor~Intel Core i5-3427U CPU 1.8Ghz, RAM (\ram) 4Gb, dengan sistem operasi
+OS X 10.10.4 (Yosemite), Macbook-Air model tahun 2011.
+
+% }}} Lingkungan Uji Coba %
+
+% Skenario Pengujian {{{ %
+\subsection{Skenario Pengujian}
+
+Skenario pengujian pada penelitian ini dibagi menjadi tiga bagian. Skenario
+pengujian ini dilakukan untuk mengetahui kinerja \tracking~dengan model
+interaksi \pubsub.
+
+\begin{enumerate}
+  [label=\alph*.
+  ,noitemsep
+  ,nolistsep
+  ,leftmargin=0cm
+  ,itemindent=.5cm
+  ,listparindent=\parindent
+  ]
+
+  \item Uji coba \bandwidth
+
+  \item Uji coba \latency
+
+  \item Uji coba sumber daya perangkat bergerak
+
+\end{enumerate}
+
+% }}} Skenario Pengujian %
+
+% Parameter Pengujian {{{ %
+\subsection{Parameter Pengujian}
+
+Sesuai dengan tujuan penelitian ini, yakni untuk membangun sistem
+\tracking~multi target serta \f{update protocol} yang bersifat adaptif berbasis
+\pubsub~dalam lingkungan bergerak. Untuk mengetahui kualitas layanan, perlu
+adanya parameter yang dapat mengidentifikasi perbaikan kualitas layanan model
+interaksi \pubsub~dalam lingkungan bergerak. Parameter-parameter yang digunakan
+dalam penelitian ini adalah \bandwidth, \latency~dan sumber daya baterai.
+
+\begin{enumerate}
+  [label=\alph*.
+  ,noitemsep
+  ,nolistsep
+  ,leftmargin=0cm
+  ,itemindent=.5cm
+  ,listparindent=\parindent
+  ]
+
+  \item Penggunaan \bandwidth
+
+  Uji coba parameter penggunaan \bandwidth~dilakukan dengan mengukur penggunaan
+  \bandwidth~ketika terjadi interaksi antara \server~dan \client. Uji coba akan
+  dilakukan sebanyak dua kali yakni menggunakan \f{update protocol} yang
+  non-adaptif dan adaptif dengan model interaksi \pubsub. Hasil dari
+  masing-masing pengujian akan dibandingan sehingga akan terlihat perbedaan
+  penggunaan \bandwidth~antara kedua uji coba.
+
+  \item \Latency~(Waktu respon)
+
+  Uji coba parameter waktu respon dilakukan dengan menghitung waktu antara
+  \publish~lokasi dikirimkan dari \publisher~ke \server~sampai diterima oleh
+  \subscriber~berdasarkan dasar ketertarikan. Uji coba akan dilakukan sebanyak
+  dua kali yakni menggunakan \f{update protocol} yang non-adaptif dan adaptif
+  dengan model interaksi \pubsub. Hasil dari masing-masing tiap pengujian akan
+  dibandingkan untuk kemudian dapat dianalisa.
+
+  \item Sumber daya baterai
+    \[TODO\]
+
+\end{enumerate}
+
+% }}} Parameter Pengujian %
+
+% }}} Uji Coba %
+
+% Hasil Uji Coba dan Analisis {{{ %
+\section{Hasil Uji Coba dan Analisis}
+% }}} Hasil Uji Coba dan Analisis %

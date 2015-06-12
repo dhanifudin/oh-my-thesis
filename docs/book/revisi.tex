@@ -1,0 +1,42 @@
+% template penulisan proposal tesis
+
+%\documentclass[12pt, a4paper, openright]{scrreprt}
+\documentclass[12pt, a4paper, openright]{scrbook}
+
+\usepackage{its}
+\input{setting}
+\input{istilah}
+\include{hype.indonesia}
+
+\begin{document}
+
+\pagenumbering{roman}
+%\putpdf{pics/master_sampul_luar}
+%\emptypage
+
+\putpdf{pics/master_sampul_dalam}
+\setcounter{page}{2}
+\cleardoublepage
+
+\addChapter{Lembar Pengesahan}
+\onehalfspacing
+\include{pengesahan}
+
+\addChapter{Abstrak} \singlespacing
+\include{abstrak}
+\include{abstract}
+
+\onehalfspacing
+\tableofcontents
+\listoffigures
+\listoftables
+
+\cleardoublepage
+\pagenumbering{arabic}
+
+\include{bab1}
+\include{bab2}
+\include{bab3}
+\include{pustaka}
+
+\end{document}
