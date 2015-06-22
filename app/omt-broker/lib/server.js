@@ -61,83 +61,98 @@ Server.prototype.filter = function(clientId, payload, cb) {
             }
 
             logger.debug('Evaluate for filter: ' + filter);
-            var params = filter.split(' ');
-            var tasks = [];
-            var expressions = [];
-            var operators = [];
+            var words = filter.split(' ');
+            var tasks = [],
+              props = [],
+              comparators = [],
+              values = [],
+              logicals = [];
 
-            params.forEach(function(param) {
-              if (param !== '&&' && param !== '||') {
-                expressions.push(param);
-                tasks.push(taskFilter());
+            words.forEach(function(word) {
+              if (/user|area/i.test(word)) {
+                props.push(word);
+              } else if(/=|<>|<=|>=/.test(word)) {
+                comparators.push(word);
+              } else if (/and|or/i.test(word)) {
+                logicals.push(word);
               } else {
-                operators.push(param);
+                values.push(word.replace(/'/g, ''));
               }
             });
 
-            async.waterfall(tasks, function(err, result) {
-              /* logger.debug('Result: ' + result + ' mode: ' + mode); */
-              if (result) {
-                logger.debug('notify track for current user: ' + currentUser);
-                that.notify(currentUser, constant.code.LOC_OK, track);
-              }
-              cb(trackUser, result);
-              /* else { */
-              /*   if (mode === constant.mode.ADAPTIVE) { */
-              /*     logger.debug('check idle for adaptive'); */
-              /*     model.checkIdle(trackUser); */
-              /*   } */
-              /* } */
-              filterResult = result;
-            });
+            for (var i = 0; i < props.length; i += 1) {
+              tasks.push(taskFilter(props[i], comparators[i], values[i], logicals[i - 1]));
+            }
 
-            function taskFilter() {
+            function taskFilter(prop, comparator, value, logical) {
               return function(result, callback) {
+                var previousResult;
                 // Handle first task waterfall
-                var user, area, previousResult;
                 if (typeof callback === 'undefined') {
                   callback = result;
                 } else {
                   previousResult = result;
                 }
-                eval(expressions[0]); // jshint ignore:line
-                if (typeof user !== 'undefined')
-                  filterByUser(user, previousResult, callback);
-                else if (typeof area !== 'undefined')
-                  filterByArea(area, previousResult, callback);
+                switch(prop.toUpperCase()) {
+                  case 'USER':
+                    filterByUser(previousResult, comparator, value, logical, callback);
+                    break;
+                  case 'AREA':
+                    filterByArea(previousResult, value, logical, callback);
+                    break;
+                  default:
+                    callback(null, false);
+                    break;
+                }
               }
             }
 
-            function filterByUser(user, previousResult, callback) {
-              logger.debug('TrackUser: ' + trackUser + ' filter: ' + user);
-              var result = (user === trackUser);
-              expressions.splice(0, 1);
-              if (typeof previousResult !== 'undefined') {
-                var exp = [previousResult, operators[0], result].join(' ');
-                operators.splice(0, 1);
-                result = eval(exp); // jshint ignore:line
+            function logicalHelper(result1, logical, result2) {
+              switch(logical.toUpperCase()) {
+                case 'AND':
+                  return (result1 && result2);
+                case 'OR':
+                  return (result1 || result2);
+                default:
+                  return false;
               }
-              logger.debug('Evaluate filter user: ' + user);
+            }
+
+            function filterByUser(previousResult, comparator, value, logical, callback) {
+              logger.debug('trackUser: ' + trackUser + ' value: ' + value);
+              var result = (comparator == '=') ?
+                (trackUser === value) : (
+                  (comparator == '<>') ? (trackUser !== value) : false
+              );
+              if (typeof logical !== 'undefined') {
+                result = logicalHelper(previousResult, logical, result);
+              }
               callback(null, result);
             }
 
-            function filterByArea(area, previousResult, callback) {
+            function filterByArea(previousResult, area, logical, callback) {
               persistence.area(area, track, function(err, rows) {
-                if(err)
+                if (err)
                   callback(err, false);
                 else {
                   var result = rows > 0;
-                  expressions.splice(0, 1);
-                  if (typeof previousResult !== 'undefined') {
-                    var exp = [previousResult, operators[0], result].join(' ');
-                    operators.splice(0, 1);
-                    result = eval(exp); // jshint ignore:line
+                  if (typeof logical !== 'undefined') {
+                    result = logicalHelper(previousResult, logical, result);
                   }
-                  logger.debug('Evaluate filter area: ' + area);
                   callback(null, result);
                 }
               });
             }
+
+            async.waterfall(tasks, function(err, result) {
+              logger.debug('Waterfall: ' + result);
+              if (result) {
+                logger.debug('notify track for current user: ' + currentUser);
+                that.notify(currentUser, constant.code.LOC_OK, track);
+              }
+              cb(trackUser, result);
+              filterResult = result;
+            });
 
           });
         }

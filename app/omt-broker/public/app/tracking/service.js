@@ -34,6 +34,7 @@
     '$window',
     'tracking.data',
     'util',
+    'TOPIC',
     mqttFactory
   ])
 
@@ -42,7 +43,7 @@
     restFactory
   ]);
 
-  function mqttFactory($rootScope, $window, data, util) {
+  function mqttFactory($rootScope, $window, data, util, topic) {
 
     function connect(username) {
       var options = {
@@ -116,7 +117,7 @@
     }
 
     function track(filter) {
-      publish('TRACK', filter, function(e1, e2) {
+      publish(topic.TRACK, filter, function(e1, e2) {
         util.log(e1);
         util.log(e2);
       });
@@ -125,7 +126,7 @@
     function untrack(index) {
       /* var filter = data.storage.tracks[index]; */
       var filter = data.tracks[index];
-      publish('UNTRACK', filter, function(e1, e2) {
+      publish(topic.UNTRACK, filter, function(e1, e2) {
         util.log(e1);
         util.log(e2);
       });
