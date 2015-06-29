@@ -43,11 +43,11 @@ function getLocation(level, location, callback) {
   } else {
     var data = [
       level,
-      location.lat,
-      location.lng
+      location.lng,
+      location.lat
     ];
     persistence.execute(
-      'SELECT x(center) AS lat, y(center) AS lng\
+      'SELECT x(center) AS lng, y(center) AS lat\
       FROM location\
       WHERE level_id >= ?\
       AND st_contains(geo, POINT(?, ?))\

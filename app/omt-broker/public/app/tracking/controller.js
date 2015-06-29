@@ -5,6 +5,7 @@
   .controller('TrackingController', [
     '$scope',
     '$mdDialog',
+    'leafletData',
     'tracking.mqtt',
     'tracking.rest',
     'tracking.data',
@@ -37,10 +38,12 @@
     'tracking.data',
     'tracking.mqtt',
     'util',
+    'ACTION',
+    'CODE',
     trackListController
   ]);
 
-  function trackingController($scope, $mdDialog, mqtt, rest, data, util) {
+  function trackingController($scope, $mdDialog, leafletData, mqtt, rest, data, util, action, code) {
     var that = this;
 
     angular.extend($scope, {
@@ -48,8 +51,15 @@
         lat: -7.27956,
         lng: 112.79744,
         zoom: 16
-      }
+      },
+      markers: data.markers
     });
+
+    /* $scope.$on('messageEvent', function(event, data) { */
+    /*   handleMessage(data.topic, data.payload); */
+    /* }); */
+
+    /* leafletData.getMap().then(mapHandler); */
 
     that.logout = function() {
       util.log('Logout');
@@ -69,6 +79,73 @@
         util.log('Cancel');
       });
     };
+
+    function handleMessage(topic, payload) {
+      util.log('Received => ' + [topic, payload].join(': '));
+      if (topic === data.storage.username) {
+        try {
+          var message = JSON.parse(payload);
+          util.log('Received => ' + JSON.stringify(message));
+          if (message.code === 'OK') {
+            switch(message.action) {
+              /* case action.TRACK: */
+              case 'TRACK':
+                  if ($scope.markers.hasOwnProperty(message.user)) {
+                    $scope.markers[message.user].lat = message.lat;
+                    $scope.markers[message.user].lng = message.lng;
+                    util.log('Updating location, Lat: ' + message.lat + ' Lng: ' + message.lng);
+                  } else {
+                    $scope.markers[message.user] = {
+                      lat: message.lat,
+                      lng: message.lng,
+                      message: message.user,
+                      focus: true
+                    }
+                    util.log('New location, Lat: ' + message.lat + ' Lng: ' + message.lng);
+                  }
+                  /* data.storage.tracks.push(message.filter); */
+                /* }); */
+                break;
+              /* case action.ADD: */
+              case 'ADD':
+                data.tracks.add(message.filter);
+                break;
+              /* case action.REMOVE: */
+              case 'REMOVE':
+                data.tracks.remove(message.filter);
+                break;
+            }
+          } else if (message.code === 'ERR') {
+            util.log('Error');
+          }
+          /* switch(message.code) { */
+          /*   case 'OK': */
+          /*     util.log(message); */
+          /*     break; */
+          /*   case 'TRACK': */
+          /*     $rootScope.$apply(function() { */
+          /*       data.tracks.add(message.filter); */
+          /*       /1* data.storage.tracks.push(message.filter); *1/ */
+          /*     }); */
+          /*     break; */
+          /*   case 'UNTRACK': */
+          /*     $rootScope.$apply(function() { */
+          /*       data.tracks.remove(message.filter); */
+          /*       /1* data.storage.tracks.remove(message.filter); *1/ */
+          /*     }); */
+          /*     break; */
+          /*   case 'STOP': */
+          /*     util.log('STOP'); */
+          /*     break; */
+          /*   case 'CHECK': */
+          /*     util.log('CHECK'); */
+          /*     break; */
+          /* } */
+        } catch(e) {
+          util.log(e);
+        }
+      }
+    }
   }
 
   function loginController(mqtt, data, util) {
@@ -116,8 +193,8 @@
     ];
 
     that.operators = [
-      { name: 'And', value: '&&' },
-      { name: 'Or', value: '||' },
+      { name: 'And', value: 'and' },
+      { name: 'Or', value: 'or' },
       { name: 'Empty', value: null }
     ];
 
@@ -136,9 +213,9 @@
     that.add = function() {
       var expression;
       if (that.isPeopleType()) {
-        expression = 'user == \'' + that.selectedUser + '\'';
+        expression = 'user = \'' + that.selectedUser + '\'';
       } else if (that.isAreaType()) {
-        expression = 'area(\'' + that.selectedArea + '\')';
+        expression = 'area = \'' + that.selectedArea + '\'';
       } else if (that.isManualType) {
         expression = that.manualFilter;
       }

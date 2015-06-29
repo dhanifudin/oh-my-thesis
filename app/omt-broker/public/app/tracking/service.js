@@ -5,12 +5,17 @@
   ])
 
   .service('tracking.data', [
+    '$rootScope',
     '$localStorage',
-    function($storage) {
+    'LEVEL',
+    'util',
+    function($rootScope, $storage, LEVEL, util) {
       var that = this;
       this.client = null;
       this.joined = false;
       this.tracks = [];
+      this.markers = {};
+
       this.storage = $storage.$default({
         username: null,
         /* tracks: [] */
@@ -26,6 +31,53 @@
         });
       }
 
+      this.updateMarker = function(track) {
+        util.log(that.markers);
+        if (that.markers.hasOwnProperty(track.user)) {
+          that.markers[track.user].lat = track.lat;
+          that.markers[track.user].lng = track.lng;
+          util.log('Updating location, Lat: ' + track.lat + ' Lng: ' + track.lng);
+        } else {
+          that.markers[track.user] = {
+            lat: track.lat,
+            lng: track.lng,
+            message: track.user
+          }
+          util.log('New location, Lat: ' + track.lat + ' Lng: ' + track.lng);
+        }
+      }
+
+      function getMarker(level) {
+        var marker = null;
+        switch(level) {
+          case LEVEL.COORDINATE:
+            marker = L.AwesomeMarkers.icon({
+              markerColor: 'red'
+            });
+            break;
+          case LEVEL.BUILDING:
+            marker = L.AwesomeMarkers.icon({
+              markerColor: 'green'
+            });
+            break;
+          case LEVEL.ZONE:
+            marker = L.AwesomeMarkers.icon({
+              markerColor: 'blue'
+            });
+            break;
+          case LEVEL.AREA:
+            marker = L.AwesomeMarkers.icon({
+              markerColor: 'yellow'
+            });
+            break;
+          default:
+            marker = L.AwesomeMarkers.icon({
+              markerColor: 'white'
+            });
+            break;
+        }
+        return marker;
+      }
     }
   ])
 
@@ -34,7 +86,8 @@
     '$window',
     'tracking.data',
     'util',
-    'TOPIC',
+    'CODE',
+    'ACTION',
     mqttFactory
   ])
 
@@ -43,7 +96,7 @@
     restFactory
   ]);
 
-  function mqttFactory($rootScope, $window, data, util, topic) {
+  function mqttFactory($rootScope, $window, data, util, code, action) {
 
     function connect(username) {
       var options = {
@@ -58,6 +111,7 @@
         });
       });
       data.client.on('message', function(topic, payload) {
+        /* $rootScope.$broadcast('messageEvent', { topic: topic, payload: payload }); */
         handleMessage(topic, payload);
       });
       data.client.on('close', function() {
@@ -73,29 +127,53 @@
         try {
           var message = JSON.parse(payload);
           util.log('Received => ' + JSON.stringify(message));
-          switch(message.code) {
-            case 'OK':
-              util.log(message);
-              break;
-            case 'TRACK':
-              $rootScope.$apply(function() {
-                data.tracks.add(message.filter);
-                /* data.storage.tracks.push(message.filter); */
-              });
-              break;
-            case 'UNTRACK':
-              $rootScope.$apply(function() {
-                data.tracks.remove(message.filter);
-                /* data.storage.tracks.remove(message.filter); */
-              });
-              break;
-            case 'STOP':
-              util.log('STOP');
-              break;
-            case 'CHECK':
-              util.log('CHECK');
-              break;
+          if (message.code === code.OK) {
+            switch(message.action) {
+              case action.TRACK:
+                $rootScope.$apply(function() {
+                  data.updateMarker(message);
+                  /* data.storage.tracks.push(message.filter); */
+                });
+                break;
+              case action.ADD:
+                $rootScope.$apply(function() {
+                  data.tracks.add(message.filter);
+                  /* data.storage.tracks.push(message.filter); */
+                });
+                break;
+              case action.REMOVE:
+                $rootScope.$apply(function() {
+                  data.tracks.remove(message.filter);
+                  /* data.storage.tracks.remove(message.filter); */
+                });
+                break;
+            }
+          } else if (message.code === code.ERR) {
+            util.log('Error');
           }
+          /* switch(message.code) { */
+          /*   case 'OK': */
+          /*     util.log(message); */
+          /*     break; */
+          /*   case 'TRACK': */
+          /*     $rootScope.$apply(function() { */
+          /*       data.tracks.add(message.filter); */
+          /*       /1* data.storage.tracks.push(message.filter); *1/ */
+          /*     }); */
+          /*     break; */
+          /*   case 'UNTRACK': */
+          /*     $rootScope.$apply(function() { */
+          /*       data.tracks.remove(message.filter); */
+          /*       /1* data.storage.tracks.remove(message.filter); *1/ */
+          /*     }); */
+          /*     break; */
+          /*   case 'STOP': */
+          /*     util.log('STOP'); */
+          /*     break; */
+          /*   case 'CHECK': */
+          /*     util.log('CHECK'); */
+          /*     break; */
+          /* } */
         } catch(e) {
           util.log(e);
         }
@@ -108,8 +186,9 @@
           type: type,
           filter: filter
         };
+        util.log(message);
         data.client.publish(
-          'tracker',
+          type,
           JSON.stringify(message),
           callback
         );
@@ -117,7 +196,8 @@
     }
 
     function track(filter) {
-      publish(topic.TRACK, filter, function(e1, e2) {
+      util.log(filter);
+      publish(action.ADD, filter, function(e1, e2) {
         util.log(e1);
         util.log(e2);
       });
@@ -126,7 +206,7 @@
     function untrack(index) {
       /* var filter = data.storage.tracks[index]; */
       var filter = data.tracks[index];
-      publish(topic.UNTRACK, filter, function(e1, e2) {
+      publish(action.REMOVE, filter, function(e1, e2) {
         util.log(e1);
         util.log(e2);
       });

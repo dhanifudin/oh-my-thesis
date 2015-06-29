@@ -6,21 +6,29 @@
     'tracking.services'
   ])
 
-  .constant('TOPIC', {
-    'TRACK': 'track',
-    'UNTRACK': 'untrack',
-    'LOCATION': 'location',
+  .constant('FLAG', {
+    'TRACK': 'TRACK',
+    'CHECK': 'CHECK'
   })
 
   .constant('CODE', {
-    'STOP': 'S',
-    'CHECK': 'C',
-    'TRACK': 'T',
-    'TRACK_OK': 'T1',
-    'TRACK_NOT_OK': 'T0',
-    'UNTRACK_OK': 'U1',
-    'UNTRACK_NOT_OK': 'U0',
-    'LOC_OK': 'L1'
+    'OK': 'OK',
+    'ERR': 'ERR'
+  })
+
+  .constant('ACTION', {
+    'ADD': 'ADD',
+    'REMOVE': 'REMOVE',
+    'TRACK': 'TRACK',
+    'UNTRACK': 'UNTRACK',
+    'CHECK': 'CHECK'
+  })
+
+  .constant('LEVEL', {
+    'COORDINATE': 1,
+    'BUILDING': 2,
+    'ZONE': 3,
+    'AREA': 4
   })
 
   .run([

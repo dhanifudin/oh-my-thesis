@@ -1,0 +1,415 @@
+[{
+  "username": "publisher1",
+  "name": "Publisher 1",
+  "relationships": []
+}, {
+  "username": "publisher2",
+  "name": "Publisher 2",
+  "relationships": []
+}, {
+  "username": "publisher3",
+  "name": "Publisher 3",
+  "relationships": []
+}, {
+  "username": "publisher4",
+  "name": "Publisher 4",
+  "relationships": []
+}, {
+  "username": "publisher5",
+  "name": "Publisher 5",
+  "relationships": []
+}, {
+  "username": "publisher6",
+  "name": "Publisher 6",
+  "relationships": []
+}, {
+  "username": "publisher7",
+  "name": "Publisher 7",
+  "relationships": []
+}, {
+  "username": "publisher8",
+  "name": "Publisher 8",
+  "relationships": []
+}, {
+  "username": "publisher9",
+  "name": "Publisher 9",
+  "relationships": []
+}, {
+  "username": "publisher10",
+  "name": "Publisher 10",
+  "relationships": []
+}, {
+  "username": "subscriber1",
+  "name": "Subscriber 1",
+  "relationships": [{
+    "username": "publisher1",
+    "level": 1
+  }, {
+    "username": "publisher2",
+    "level": 2
+  }, {
+    "username": "publisher3",
+    "level": 3
+  }, {
+    "username": "publisher4",
+    "level": 4
+  }, {
+    "username": "publisher5",
+    "level": 1
+  }, {
+    "username": "publisher6",
+    "level": 2
+  }, {
+    "username": "publisher7",
+    "level": 3
+  }, {
+    "username": "publisher8",
+    "level": 4
+  }, {
+    "username": "publisher9",
+    "level": 1
+  }, {
+    "username": "publisher10",
+    "level": 2
+  }]
+}, {
+  "username": "subscriber2",
+  "name": "Subscriber 2",
+  "relationships": [{
+    "username": "publisher1",
+    "level": 2
+  }, {
+    "username": "publisher2",
+    "level": 3
+  }, {
+    "username": "publisher3",
+    "level": 4
+  }, {
+    "username": "publisher4",
+    "level": 1
+  }, {
+    "username": "publisher5",
+    "level": 2
+  }, {
+    "username": "publisher6",
+    "level": 3
+  }, {
+    "username": "publisher7",
+    "level": 4
+  }, {
+    "username": "publisher8",
+    "level": 1
+  }, {
+    "username": "publisher9",
+    "level": 2
+  }, {
+    "username": "publisher10",
+    "level": 3
+  }]
+}, {
+  "username": "subscriber2",
+  "name": "Subscriber 2",
+  "relationships": [{
+    "username": "publisher1",
+    "level": 1
+  }, {
+    "username": "publisher2",
+    "level": 2
+  }, {
+    "username": "publisher3",
+    "level": 3
+  }, {
+    "username": "publisher4",
+    "level": 4
+  }, {
+    "username": "publisher5",
+    "level": 1
+  }, {
+    "username": "publisher6",
+    "level": 2
+  }, {
+    "username": "publisher7",
+    "level": 3
+  }, {
+    "username": "publisher8",
+    "level": 4
+  }, {
+    "username": "publisher9",
+    "level": 1
+  }, {
+    "username": "publisher10",
+    "level": 2
+  }]
+}, {
+  "username": "subscriber3",
+  "name": "Subscriber 3",
+  "relationships": [{
+    "username": "publisher1",
+    "level": 1
+  }, {
+    "username": "publisher2",
+    "level": 2
+  }, {
+    "username": "publisher3",
+    "level": 3
+  }, {
+    "username": "publisher4",
+    "level": 4
+  }, {
+    "username": "publisher5",
+    "level": 1
+  }, {
+    "username": "publisher6",
+    "level": 2
+  }, {
+    "username": "publisher7",
+    "level": 3
+  }, {
+    "username": "publisher8",
+    "level": 4
+  }, {
+    "username": "publisher9",
+    "level": 1
+  }, {
+    "username": "publisher10",
+    "level": 2
+  }]
+}, {
+  "username": "subscriber4",
+  "name": "Subscriber 4",
+  "relationships": [{
+    "username": "publisher1",
+    "level": 1
+  }, {
+    "username": "publisher2",
+    "level": 2
+  }, {
+    "username": "publisher3",
+    "level": 3
+  }, {
+    "username": "publisher4",
+    "level": 4
+  }, {
+    "username": "publisher5",
+    "level": 1
+  }, {
+    "username": "publisher6",
+    "level": 2
+  }, {
+    "username": "publisher7",
+    "level": 3
+  }, {
+    "username": "publisher8",
+    "level": 4
+  }, {
+    "username": "publisher9",
+    "level": 1
+  }, {
+    "username": "publisher10",
+    "level": 2
+  }]
+}, {
+  "username": "subscriber5",
+  "name": "5ubscriber 1",
+  "relationships": [{
+    "username": "publisher1",
+    "level": 1
+  }, {
+    "username": "publisher2",
+    "level": 2
+  }, {
+    "username": "publisher3",
+    "level": 3
+  }, {
+    "username": "publisher4",
+    "level": 4
+  }, {
+    "username": "publisher5",
+    "level": 1
+  }, {
+    "username": "publisher6",
+    "level": 2
+  }, {
+    "username": "publisher7",
+    "level": 3
+  }, {
+    "username": "publisher8",
+    "level": 4
+  }, {
+    "username": "publisher9",
+    "level": 1
+  }, {
+    "username": "publisher10",
+    "level": 2
+  }]
+}, {
+  "username": "subscriber6",
+  "name": "Subscriber 6",
+  "relationships": [{
+    "username": "publisher1",
+    "level": 1
+  }, {
+    "username": "publisher2",
+    "level": 2
+  }, {
+    "username": "publisher3",
+    "level": 3
+  }, {
+    "username": "publisher4",
+    "level": 4
+  }, {
+    "username": "publisher5",
+    "level": 1
+  }, {
+    "username": "publisher6",
+    "level": 2
+  }, {
+    "username": "publisher7",
+    "level": 3
+  }, {
+    "username": "publisher8",
+    "level": 4
+  }, {
+    "username": "publisher9",
+    "level": 1
+  }, {
+    "username": "publisher10",
+    "level": 2
+  }]
+}, {
+  "username": "subscriber7",
+  "name": "Subscriber 7",
+  "relationships": [{
+    "username": "publisher1",
+    "level": 1
+  }, {
+    "username": "publisher2",
+    "level": 2
+  }, {
+    "username": "publisher3",
+    "level": 3
+  }, {
+    "username": "publisher4",
+    "level": 4
+  }, {
+    "username": "publisher5",
+    "level": 1
+  }, {
+    "username": "publisher6",
+    "level": 2
+  }, {
+    "username": "publisher7",
+    "level": 3
+  }, {
+    "username": "publisher8",
+    "level": 4
+  }, {
+    "username": "publisher9",
+    "level": 1
+  }, {
+    "username": "publisher10",
+    "level": 2
+  }]
+}, {
+  "username": "subscriber8",
+  "name": "Subscriber 8",
+  "relationships": [{
+    "username": "publisher1",
+    "level": 1
+  }, {
+    "username": "publisher2",
+    "level": 2
+  }, {
+    "username": "publisher3",
+    "level": 3
+  }, {
+    "username": "publisher4",
+    "level": 4
+  }, {
+    "username": "publisher5",
+    "level": 1
+  }, {
+    "username": "publisher6",
+    "level": 2
+  }, {
+    "username": "publisher7",
+    "level": 3
+  }, {
+    "username": "publisher8",
+    "level": 4
+  }, {
+    "username": "publisher9",
+    "level": 1
+  }, {
+    "username": "publisher10",
+    "level": 2
+  }]
+}, {
+  "username": "subscriber9",
+  "name": "Subscriber 9",
+  "relationships": [{
+    "username": "publisher1",
+    "level": 1
+  }, {
+    "username": "publisher2",
+    "level": 2
+  }, {
+    "username": "publisher3",
+    "level": 3
+  }, {
+    "username": "publisher4",
+    "level": 4
+  }, {
+    "username": "publisher5",
+    "level": 1
+  }, {
+    "username": "publisher6",
+    "level": 2
+  }, {
+    "username": "publisher7",
+    "level": 3
+  }, {
+    "username": "publisher8",
+    "level": 4
+  }, {
+    "username": "publisher9",
+    "level": 1
+  }, {
+    "username": "publisher10",
+    "level": 2
+  }]
+}, {
+  "username": "subscriber10",
+  "name": "Subscriber 10",
+  "relationships": [{
+    "username": "publisher1",
+    "level": 1
+  }, {
+    "username": "publisher2",
+    "level": 2
+  }, {
+    "username": "publisher3",
+    "level": 3
+  }, {
+    "username": "publisher4",
+    "level": 4
+  }, {
+    "username": "publisher5",
+    "level": 1
+  }, {
+    "username": "publisher6",
+    "level": 2
+  }, {
+    "username": "publisher7",
+    "level": 3
+  }, {
+    "username": "publisher8",
+    "level": 4
+  }, {
+    "username": "publisher9",
+    "level": 1
+  }, {
+    "username": "publisher10",
+    "level": 2
+  }]
+}]

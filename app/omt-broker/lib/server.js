@@ -10,6 +10,7 @@ var Server = function(moscaServer, resolution) {
   this.moscaServer = moscaServer;
   this.resolution = resolution;
   this.users = {};
+  logger.debug('Resolution: ' + this.resolution);
 }
 
 Server.prototype.addUser = function(clientId) {
@@ -145,12 +146,37 @@ Server.prototype.filter = function(clientId, payload, cb) {
             }
 
             async.waterfall(tasks, function(err, result) {
-              logger.debug('Waterfall: ' + result);
               if (result) {
                 logger.debug('notify track for current user: ' + currentUser);
-                that.notify(currentUser, constant.code.LOC_OK, track);
+                logger.debug('Resolution module: ' + that.resolution);
+                if (that.resolution) {
+                  resolution.getLocation(currentUser, trackUser, {
+                    lat: track.lat,
+                    lng: track.lng
+                  }, function(err, level, location) {
+                    logger.debug('Resolution module, Level: ' + level + ' location: ' + location);
+                    track.level = level;
+                    if (location != null) {
+                      track.lat = location.lat;
+                      track.lng = location.lng;
+                    }
+                    that.notify(
+                      currentUser,
+                      constant.code.OK,
+                      constant.action.TRACK,
+                      track
+                    );
+                  })
+                } else {
+                  that.notify(
+                    currentUser,
+                    constant.code.OK,
+                    constant.action.TRACK,
+                    track
+                  );
+                }
               }
-              cb(trackUser, result);
+              cb(trackUser, result, track.flag);
               filterResult = result;
             });
 
@@ -158,6 +184,7 @@ Server.prototype.filter = function(clientId, payload, cb) {
         }
       } else {
         logger.debug('Skip for Current user: ' + currentUser + ' Track user: ' + trackUser);
+        cb(trackUser, false, track.flag);
       }
     });
   } catch(e) {
@@ -169,7 +196,7 @@ Server.prototype.track = function(clientId, payload) {
   var that = this;
   this.parse(clientId, payload, function(user, userData, filter) {
     userData.tracks.add(filter);
-    that.notify(user, constant.code.TRACK_OK, filter);
+    that.notify(user, constant.code.OK, constant.action.ADD, filter);
   });
 }
 
@@ -177,24 +204,44 @@ Server.prototype.untrack = function(clientId, payload) {
   var that = this;
   this.parse(clientId, payload, function(user, userData, filter) {
     userData.tracks.remove(filter);
-    that.notify(user, constant.code.UNTRACK_OK, filter);
+    that.notify(user, constant.code.OK, constant.action.REMOVE, filter);
   });
 }
 
-Server.prototype.notify = function(user, code, data) {
-  var message = { code: code };
-  switch(code) {
-    case constant.code.LOC_OK:
-      message.user = data.user;
-      message.lat = data.lat;
-      message.lng = data.lng;
-      message.time = data.time;
-      break;
-    case constant.code.TRACK_OK:
-    case constant.code.UNTRACK_OK:
-      message.filter = data;
-    break;
+Server.prototype.notify = function(user, code, action, data) {
+  var message = {
+    code: code,
+    action: action
+  };
+  if (code === constant.code.OK) {
+    switch(action) {
+      case constant.action.ADD:
+      case constant.action.REMOVE:
+        message.filter = data;
+        break;
+      case constant.action.TRACK:
+        message.id = data.id;
+        message.user = data.user;
+        message.lat = data.lat;
+        message.lng = data.lng;
+        message.time = data.time;
+        break;
+      case constant.action.UNTRACK:
+        break;
+    }
   }
+  /* switch(action) { */
+  /*   case constant.code.LOC_OK: */
+  /*     message.user = data.user; */
+  /*     message.lat = data.lat; */
+  /*     message.lng = data.lng; */
+  /*     message.time = data.time; */
+  /*     break; */
+  /*   case constant.code.TRACK_OK: */
+  /*   case constant.code.UNTRACK_OK: */
+  /*     message.filter = data; */
+  /*   break; */
+  /* } */
   message = JSON.stringify(message);
   this.moscaServer.publish({
     topic: user,
@@ -226,6 +273,6 @@ function getUserId(clientId) {
   return clientId.substr(clientId.indexOf('_') + 1);
 }
 
-module.exports = function(moscaServer) {
-  return new Server(moscaServer);
+module.exports = function(moscaServer, resolution) {
+  return new Server(moscaServer, resolution);
 }

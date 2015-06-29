@@ -1,0 +1,110 @@
+insert into relationship values(11, 1,  1);
+insert into relationship values(11, 2,  2);
+insert into relationship values(11, 3,  3);
+insert into relationship values(11, 4,  4);
+insert into relationship values(11, 5,  1);
+insert into relationship values(11, 6,  2);
+insert into relationship values(11, 7,  3);
+insert into relationship values(11, 8,  4);
+insert into relationship values(11, 9,  1);
+insert into relationship values(11, 10, 2);
+
+insert into relationship values(12, 1,  2);
+insert into relationship values(12, 2,  3);
+insert into relationship values(12, 3,  4);
+insert into relationship values(12, 4,  1);
+insert into relationship values(12, 5,  2);
+insert into relationship values(12, 6,  3);
+insert into relationship values(12, 7,  4);
+insert into relationship values(12, 8,  1);
+insert into relationship values(12, 9,  2);
+insert into relationship values(12, 10, 3);
+
+insert into relationship values(13, 1,  3);
+insert into relationship values(13, 2,  4);
+insert into relationship values(13, 3,  1);
+insert into relationship values(13, 4,  2);
+insert into relationship values(13, 5,  3);
+insert into relationship values(13, 6,  4);
+insert into relationship values(13, 7,  1);
+insert into relationship values(13, 8,  2);
+insert into relationship values(13, 9,  3);
+insert into relationship values(13, 10, 4);
+
+insert into relationship values(14, 1,  4);
+insert into relationship values(14, 2,  1);
+insert into relationship values(14, 3,  2);
+insert into relationship values(14, 4,  3);
+insert into relationship values(14, 5,  4);
+insert into relationship values(14, 6,  1);
+insert into relationship values(14, 7,  2);
+insert into relationship values(14, 8,  3);
+insert into relationship values(14, 9,  4);
+insert into relationship values(14, 10, 1);
+
+insert into relationship values(15, 1, 1);
+insert into relationship values(15, 2, 2);
+insert into relationship values(15, 3, 3);
+insert into relationship values(15, 4, 4);
+insert into relationship values(15, 5, 1);
+insert into relationship values(15, 6, 2);
+insert into relationship values(15, 7, 3);
+insert into relationship values(15, 8, 4);
+insert into relationship values(15, 9, 1);
+insert into relationship values(15, 10, 2);
+
+insert into relationship values(16, 1,  1);
+insert into relationship values(16, 2,  2);
+insert into relationship values(16, 3,  3);
+insert into relationship values(16, 4,  4);
+insert into relationship values(16, 5,  1);
+insert into relationship values(16, 6,  2);
+insert into relationship values(16, 7,  3);
+insert into relationship values(16, 8,  4);
+insert into relationship values(16, 9,  1);
+insert into relationship values(16, 10, 2);
+
+insert into relationship values(17, 1,  2);
+insert into relationship values(17, 2,  3);
+insert into relationship values(17, 3,  4);
+insert into relationship values(17, 4,  1);
+insert into relationship values(17, 5,  2);
+insert into relationship values(17, 6,  3);
+insert into relationship values(17, 7,  4);
+insert into relationship values(17, 8,  1);
+insert into relationship values(17, 9,  2);
+insert into relationship values(17, 10, 3);
+
+insert into relationship values(18, 1,  3);
+insert into relationship values(18, 2,  4);
+insert into relationship values(18, 3,  1);
+insert into relationship values(18, 4,  2);
+insert into relationship values(18, 5,  3);
+insert into relationship values(18, 6,  4);
+insert into relationship values(18, 7,  1);
+insert into relationship values(18, 8,  2);
+insert into relationship values(18, 9,  3);
+insert into relationship values(18, 10, 4);
+
+insert into relationship values(19, 1,  4);
+insert into relationship values(19, 2,  1);
+insert into relationship values(19, 3,  2);
+insert into relationship values(19, 4,  3);
+insert into relationship values(19, 5,  4);
+insert into relationship values(19, 6,  1);
+insert into relationship values(19, 7,  2);
+insert into relationship values(19, 8,  3);
+insert into relationship values(19, 9,  4);
+insert into relationship values(19, 10, 1);
+
+insert into relationship values(20, 1, 1);
+insert into relationship values(20, 2, 2);
+insert into relationship values(20, 3, 3);
+insert into relationship values(20, 4, 4);
+insert into relationship values(20, 5, 1);
+insert into relationship values(20, 6, 2);
+insert into relationship values(20, 7, 3);
+insert into relationship values(20, 8, 4);
+insert into relationship values(20, 9, 1);
+insert into relationship values(20, 10, 2);
+

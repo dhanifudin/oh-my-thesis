@@ -18,19 +18,6 @@ router.get('/users', function(req, res) {
 });
 
 router.get('/areas', function(req, res) {
-  /* var areas = [ */
-  /*   { */
-  /*     code: 'FTIF', */
-  /*     level: 'area', */
-  /*     name: 'Fakultas Teknik Informasi' */
-  /*   }, */
-  /*   { */
-  /*     code: 'FTSP', */
-  /*     level: 'area', */
-  /*     name: 'Fakultas Teknik Sipil dan Perencanaan' */
-  /*   } */
-  /* ]; */
-  /* res.json(areas); */
   persistence.execute(
     'SELECT lo.code AS code, l.name AS level, lo.name AS name FROM location lo \
     INNER JOIN level l ON l.id = lo.level_id',

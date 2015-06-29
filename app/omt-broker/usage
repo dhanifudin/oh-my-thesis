@@ -1,0 +1,54 @@
+#!/usr/bin/env python
+
+from datetime import datetime
+import sys, getopt, json, csv
+
+def read_log(input):
+  data = []
+  file = open(input)
+  for line in iter(file):
+    data.append(json.loads(line))
+  file.close()
+  return data
+
+def write_csv(output, data):
+  with open(output, 'wb') as csvfile:
+    writer = csv.writer(
+      csvfile,
+      delimiter=',',
+      quotechar='"',
+      quoting=csv.QUOTE_MINIMAL
+    )
+
+    writer.writerow(['Time', 'Users', 'CPU', 'Memory'])
+    for row in data:
+      writer.writerow([row['time'], row['users'], row['cpu'], row['memory']])
+
+def help():
+  return 'help'
+
+def main(argv):
+  try:
+    opts, args = getopt.getopt(argv, 'hi:o:', ['input=', 'output='])
+  except getopt.GetoptError, e:
+    print e
+    sys.exit(2)
+
+  input_file, output_file = '', ''
+  for opt, arg in opts:
+    if opt == '-h':
+      print help()
+      sys.exit()
+    elif opt in ('-i', '--input'):
+      input_file = arg
+    elif opt in ('-o', '--output'):
+      output_file = arg
+
+  if '' not in (input_file, output_file):
+    data = read_log(input_file)
+    write_csv(output_file, data)
+  else:
+    print help()
+
+if __name__ == '__main__':
+  main(sys.argv[1:])

@@ -23,20 +23,21 @@ Array.prototype.remove = function(value) {
 
 /* Modules declarations {{{ */
 var program = require('commander');
+/* var bunyan = require('bunyan'); */
+var debug = require('debug')('omt:app');
 var express = require('express');
 var path = require('path');
-var app = express();
 var http = require('http');
+var app = express();
 var httpServer = http.createServer(app);
-var logger = require('./lib/log')('omt:app');
+var constant = require('./lib/constant');
+/* var logger = require('./lib/log')('omt:app'); */
 var options = require('./broker.json');
 var mosca = require('mosca');
 var moscaServer = new mosca.Server(options.broker);
-var constant = require('./lib/constant');
-/* var server = require('./lib/server')(moscaServer); */
 var server = null;
 var broker = null;
-/* var evaluator = require('./lib/evaluator')(model); */
+/* var lattency = null; */
 /* }}} Modules declarations */
 
 /* Prompt to user {{{ */
@@ -44,6 +45,7 @@ program
   .usage('[options] [args]')
   .option('-m, --mode <mode>', 'Mode', /^(simple|adaptive)$/i, 'adaptive')
   .option('-r, --resolution', 'Enable resolution')
+  .option('-s, --stats <path>', 'Monitoring stats')
   .parse(process.argv);
 /* }}} Prompt to user */
 
@@ -74,7 +76,12 @@ moscaServer.on('clientDisconnected', onClientDisconnected);
 
 /* Events handler {{{ */
 function onReady() {
+  debug('Resolution: ' + program.resolution);
   server = require('./lib/server')(moscaServer, program.resolution);
+  if (program.stats) {
+    var usage = require('./lib/usage')(server);
+    usage.monitor(program.stats);
+  }
   switch(program.mode) {
     case constant.mode.SIMPLE:
       broker = require('./lib/simple')(server);
@@ -91,24 +98,25 @@ function onClientConnected(client) {
 }
 
 function onPublished(packet, client) {
-  logger.debug([packet.topic, packet.payload].join(': '));
+  /* logger.debug([packet.topic, packet.payload].join(': ')); */
   if (typeof client !== 'undefined') {
+    var payload = packet.payload;
     switch(packet.topic) {
-      case constant.topic.LOCATION:
-        broker.filter(client.id, packet.payload);
+      case constant.action.TRACK:
+        broker.filter(client.id, payload);
         break;
-      case constant.topic.TRACK:
-        server.track(client.id, packet.payload);
+      case constant.action.ADD:
+        server.track(client.id, payload);
         break;
-      case constant.topic.UNTRACK:
-        server.untrack(client.id, packet.payload);
+      case constant.action.REMOVE:
+        server.untrack(client.id, payload);
         break;
     }
   }
 }
 
 function onSubscribed(topic, client) {
-  logger.debug([topic, client].join(': '));
+  /* logger.debug([topic, client].join(': ')); */
 }
 
 function onClientDisconnected(client) {

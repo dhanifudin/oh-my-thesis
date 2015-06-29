@@ -51,6 +51,8 @@
       <div role="tabpanel" id="tab2-content" ng-switch-when="1" md-swipe-left="tab.next()" md-swipe-right="tab.previous()">
         {{$storage.username}}
         {{$data.tracks}}
+        {{$data.markers | json}}
+        {{markers}}
       </div>
     </ng-switch>
   </div>
@@ -61,7 +63,7 @@
 </md-sidenav>
 
 <md-content ng-show="$data.joined" flex id="content">
-  <leaflet center="its"></leaflet>
+  <leaflet center="its" markers="markers"></leaflet>
   <!-- <section layout="row" layout-align="end end"> -->
   <md-button class="md-fab btn-fab" aria-label="Track" ng-click="track.showTrackDialog($event)">
     <md-icon md-svg-icon="add"></md-icon>

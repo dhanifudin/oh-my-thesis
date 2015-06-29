@@ -21,7 +21,7 @@ module.exports = function(grunt) {
           ]
         },
         exclude: [
-          'font-awesome'
+          /* 'font-awesome' */
         ],
         dependencies: {
           'Leaflet.label': 'leaflet'
@@ -47,6 +47,13 @@ module.exports = function(grunt) {
         flatten: true,
         filter: 'isFile',
         src: 'bower_components/leaflet.draw/dist/images/*',
+        dest: 'public/css/images',
+      },
+      awesome_markers: {
+        expand: true,
+        flatten: true,
+        filter: 'isFile',
+        src: 'bower_components/Leaflet.awesome-markers/dist/images/*',
         dest: 'public/css/images',
       }
     },
