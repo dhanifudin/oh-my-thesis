@@ -15,6 +15,7 @@ Adaptive.prototype.filter = function(clientId, payload) {
       case constant.flag.TRACK:
         if (!result) {
           that.server.users[trackUser].idle -= 1;
+          logger.debug('User: ' + trackUser + ' Idle: ' + that.server.users[trackUser].idle);
           if (that.server.users[trackUser].idle === 0) {
             that.server.notify(trackUser, constant.code.OK, constant.action.UNTRACK);
             that.server.users[trackUser].idle = options.broker.idle;

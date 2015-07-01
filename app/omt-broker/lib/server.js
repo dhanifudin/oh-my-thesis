@@ -47,149 +47,169 @@ Server.prototype.filter = function(clientId, payload, cb) {
     var that = this;
     var trackUser = getUserId(clientId);
     var track = JSON.parse(payload);
+    var tasks = [];
     Object.keys(that.users).forEach(function(currentUser) {
-      if (currentUser !== trackUser) {
-        logger.debug('Current user: ' + currentUser + ' trackUser: ' + trackUser);
-        var tracks = that.users[currentUser].tracks;
-        logger.debug('Tracks: ' + tracks);
-
-        if (typeof tracks !== 'undefined') {
-          // Filter every subscription
-          var filterResult = false;
-          tracks.some(function(filter) {
-            if (filterResult) {
-              return true;
-            }
-
-            logger.debug('Evaluate for filter: ' + filter);
-            var words = filter.split(' ');
-            var tasks = [],
-              props = [],
-              comparators = [],
-              values = [],
-              logicals = [];
-
-            words.forEach(function(word) {
-              if (/user|area/i.test(word)) {
-                props.push(word);
-              } else if(/=|<>|<=|>=/.test(word)) {
-                comparators.push(word);
-              } else if (/and|or/i.test(word)) {
-                logicals.push(word);
-              } else {
-                values.push(word.replace(/'/g, ''));
-              }
-            });
-
-            for (var i = 0; i < props.length; i += 1) {
-              tasks.push(taskFilter(props[i], comparators[i], values[i], logicals[i - 1]));
-            }
-
-            function taskFilter(prop, comparator, value, logical) {
-              return function(result, callback) {
-                var previousResult;
-                // Handle first task waterfall
-                if (typeof callback === 'undefined') {
-                  callback = result;
-                } else {
-                  previousResult = result;
-                }
-                switch(prop.toUpperCase()) {
-                  case 'USER':
-                    filterByUser(previousResult, comparator, value, logical, callback);
-                    break;
-                  case 'AREA':
-                    filterByArea(previousResult, value, logical, callback);
-                    break;
-                  default:
-                    callback(null, false);
-                    break;
-                }
-              }
-            }
-
-            function logicalHelper(result1, logical, result2) {
-              switch(logical.toUpperCase()) {
-                case 'AND':
-                  return (result1 && result2);
-                case 'OR':
-                  return (result1 || result2);
-                default:
-                  return false;
-              }
-            }
-
-            function filterByUser(previousResult, comparator, value, logical, callback) {
-              logger.debug('trackUser: ' + trackUser + ' value: ' + value);
-              var result = (comparator == '=') ?
-                (trackUser === value) : (
-                  (comparator == '<>') ? (trackUser !== value) : false
-              );
-              if (typeof logical !== 'undefined') {
-                result = logicalHelper(previousResult, logical, result);
-              }
-              callback(null, result);
-            }
-
-            function filterByArea(previousResult, area, logical, callback) {
-              persistence.area(area, track, function(err, rows) {
-                if (err)
-                  callback(err, false);
-                else {
-                  var result = rows > 0;
-                  if (typeof logical !== 'undefined') {
-                    result = logicalHelper(previousResult, logical, result);
-                  }
-                  callback(null, result);
-                }
-              });
-            }
-
-            async.waterfall(tasks, function(err, result) {
-              if (result) {
-                logger.debug('notify track for current user: ' + currentUser);
-                logger.debug('Resolution module: ' + that.resolution);
-                if (that.resolution) {
-                  resolution.getLocation(currentUser, trackUser, {
-                    lat: track.lat,
-                    lng: track.lng
-                  }, function(err, level, location) {
-                    logger.debug('Resolution module, Level: ' + level + ' location: ' + location);
-                    track.level = level;
-                    if (location != null) {
-                      track.lat = location.lat;
-                      track.lng = location.lng;
-                    }
-                    that.notify(
-                      currentUser,
-                      constant.code.OK,
-                      constant.action.TRACK,
-                      track
-                    );
-                  })
-                } else {
-                  that.notify(
-                    currentUser,
-                    constant.code.OK,
-                    constant.action.TRACK,
-                    track
-                  );
-                }
-              }
-              cb(trackUser, result, track.flag);
-              filterResult = result;
-            });
-
-          });
-        }
-      } else {
-        logger.debug('Skip for Current user: ' + currentUser + ' Track user: ' + trackUser);
-        cb(trackUser, false, track.flag);
-      }
+      tasks.push(taskUser(that, trackUser, currentUser, track));
+    });
+    async.waterfall(tasks, function(err, result) {
+      cb(trackUser, result, track.flag);
     });
   } catch(e) {
     logger.debug(e);
   }
+}
+
+function taskUser(instance, trackUser, currentUser, track, isResolution) {
+  return function(result, callback) {
+    var previousResult;
+    // Handle first task waterfall
+    if (typeof callback === 'undefined') {
+      callback = result;
+    } else {
+      previousResult = result;
+    }
+    if (currentUser !== trackUser) {
+      logger.debug('Current user: ' + currentUser + ' trackUser: ' + trackUser);
+      var tracks = instance.users[currentUser].tracks;
+      logger.debug('Tracks: ' + tracks);
+      if (typeof tracks !== 'undefined') {
+        var tasks = [];
+        tracks.forEach(function(filter) {
+          tasks.push(taskFilter(trackUser, track, filter))
+        });
+        async.series(tasks, function(err, results) {
+          if (err) {
+            logger.debug(err);
+            callback(err, false);
+          } else {
+            var notify = results.indexOf(true) > -1;
+            if (notify) {
+              if (isResolution) {
+                resolution.getLocation(currentUser, trackUser, {
+                  lat: track.lat,
+                  lng: track.lng
+                }, function(err, level, location) {
+                  track.level = level;
+                  if (location != null) {
+                    track.lat = location.lat;
+                    track.lng = location.lng;
+                  }
+                  instance.notify(currentUser, constant.code.OK, constant.action.TRACK, track);
+                })
+              } else {
+                instance.notify(currentUser, constant.code.OK, constant.action.TRACK, track);
+              }
+            }
+            if (previousResult !== 'undefined')
+              previousResult = previousResult || notify;
+            callback(null, previousResult);
+          }
+        });
+      }
+    } else {
+      logger.debug('Skip for Current user: ' + currentUser + ' Track user: ' + trackUser);
+      if (previousResult !== 'undefined')
+        previousResult = previousResult || false;
+      callback(null, previousResult);
+    }
+  }
+}
+
+function taskFilter(trackUser, track, filter) {
+  return function(callback) {
+    var words = filter.split(' ');
+    var tasks = [],
+      props = [],
+      comparators = [],
+      values = [],
+      logicals = [];
+    words.forEach(function(word) {
+      filterGrammar(word, props, comparators, values, logicals);
+    });
+
+    props.forEach(function(prop, index) {
+      tasks.push(taskProp(
+        trackUser, track, prop, comparators[index],
+        values[index]
+      ));
+    });
+
+    async.series(tasks, function(err, results) {
+      logger.debug('Result Task Filter: ' + results + ' Filter: ' + filter);
+      if (err) {
+        logger.debug(err);
+        callback(err, results);
+      } else {
+        var logic;
+        for (var i = 0; i < results.length; i += 1) {
+          if (typeof logic === 'undefined')
+            logic = results[0];
+          if (logicals.length > 0)
+            logic = logicalHelper(logic, logicals[i], results[i + 1]);
+          if (i === results.length - 1)
+            callback(null, logic);
+        }
+      }
+    });
+  }
+}
+
+function taskProp(trackUser, track, prop, comparator, value) {
+  return function(callback) {
+    switch(prop.toUpperCase()) {
+      case 'USER':
+        filterByUser(trackUser, comparator, value, callback);
+      break;
+      case 'AREA':
+        filterByArea(track, value, callback);
+      break;
+      default:
+        callback(null, false);
+      break;
+    }
+  }
+}
+
+function filterGrammar(word, props, comparators, values, logicals) {
+  if (/user|area/i.test(word)) {
+    props.push(word);
+  } else if(/=|<>|<=|>=/.test(word)) {
+    comparators.push(word);
+  } else if (/and|or/i.test(word)) {
+    logicals.push(word);
+  } else {
+    values.push(word.replace(/'/g, ''));
+  }
+}
+
+function logicalHelper(result1, logical, result2) {
+  switch(logical.toUpperCase()) {
+    case 'AND':
+      return (result1 && result2);
+    case 'OR':
+      return (result1 || result2);
+    default:
+      return false;
+  }
+}
+
+function filterByUser(trackUser, comparator, value, callback) {
+  var result = (comparator == '=') ?
+    (trackUser === value) : (
+      (comparator == '<>') ? (trackUser !== value) : false
+  );
+  callback(null, result);
+}
+
+function filterByArea(track, area, callback) {
+  persistence.area(area, track, function(err, rows) {
+    if (err)
+      callback(err, false);
+    else {
+      var result = rows > 0;
+      callback(null, result);
+    }
+  });
 }
 
 Server.prototype.track = function(clientId, payload) {
@@ -220,28 +240,19 @@ Server.prototype.notify = function(user, code, action, data) {
         message.filter = data;
         break;
       case constant.action.TRACK:
-        message.id = data.id;
-        message.user = data.user;
-        message.lat = data.lat;
-        message.lng = data.lng;
-        message.time = data.time;
+        if (typeof data !== 'undefined') {
+          message.id = data.id;
+          message.user = data.user;
+          message.lat = data.lat;
+          message.lng = data.lng;
+          message.level = data.level;
+          message.time = data.time;
+        }
         break;
       case constant.action.UNTRACK:
         break;
     }
   }
-  /* switch(action) { */
-  /*   case constant.code.LOC_OK: */
-  /*     message.user = data.user; */
-  /*     message.lat = data.lat; */
-  /*     message.lng = data.lng; */
-  /*     message.time = data.time; */
-  /*     break; */
-  /*   case constant.code.TRACK_OK: */
-  /*   case constant.code.UNTRACK_OK: */
-  /*     message.filter = data; */
-  /*   break; */
-  /* } */
   message = JSON.stringify(message);
   this.moscaServer.publish({
     topic: user,

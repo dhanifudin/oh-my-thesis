@@ -41,43 +41,70 @@
           that.markers[track.user] = {
             lat: track.lat,
             lng: track.lng,
-            message: track.user
+            message: track.user,
+            icon: getMarker(track.level)
           }
           util.log('New location, Lat: ' + track.lat + ' Lng: ' + track.lng);
         }
       }
 
       function getMarker(level) {
-        var marker = null;
+        var marker = {
+          type: 'awesomeMarker',
+          icon: 'tag'
+        };
         switch(level) {
           case LEVEL.COORDINATE:
-            marker = L.AwesomeMarkers.icon({
-              markerColor: 'red'
-            });
+            marker.markerColor = 'red';
             break;
           case LEVEL.BUILDING:
-            marker = L.AwesomeMarkers.icon({
-              markerColor: 'green'
-            });
+            marker.markerColor = 'green';
             break;
           case LEVEL.ZONE:
-            marker = L.AwesomeMarkers.icon({
-              markerColor: 'blue'
-            });
+            marker.markerColor = 'blue';
             break;
           case LEVEL.AREA:
-            marker = L.AwesomeMarkers.icon({
-              markerColor: 'yellow'
-            });
+            marker.markerColor = 'black';
             break;
           default:
-            marker = L.AwesomeMarkers.icon({
-              markerColor: 'white'
-            });
+            marker.markerColor = 'white';
             break;
         }
         return marker;
       }
+
+      /* function getMarker(level) { */
+      /*   var marker = null; */
+      /*   switch(level) { */
+      /*     case LEVEL.COORDINATE: */
+      /*       marker = L.AwesomeMarkers.icon({ */
+      /*         markerColor: 'red' */
+      /*       }); */
+      /*       break; */
+      /*     case LEVEL.BUILDING: */
+      /*       marker = L.AwesomeMarkers.icon({ */
+      /*         markerColor: 'green' */
+      /*       }); */
+      /*       break; */
+      /*     case LEVEL.ZONE: */
+      /*       marker = L.AwesomeMarkers.icon({ */
+      /*         markerColor: 'blue' */
+      /*       }); */
+      /*       break; */
+      /*     case LEVEL.AREA: */
+      /*       marker = L.AwesomeMarkers.icon({ */
+      /*         markerColor: 'yellow' */
+      /*       }); */
+      /*       break; */
+      /*     default: */
+      /*       marker = L.AwesomeMarkers.icon({ */
+      /*         markerColor: 'white' */
+      /*       }); */
+      /*       break; */
+      /*   } */
+      /*   return marker; */
+      /* } */
+
     }
   ])
 
