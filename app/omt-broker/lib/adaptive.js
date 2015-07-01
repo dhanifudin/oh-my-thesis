@@ -11,30 +11,33 @@ Adaptive.prototype.filter = function(clientId, payload) {
   var that = this;
   that.server.filter(clientId, payload, function(trackUser, result, flag) {
     logger.debug([trackUser, result, flag].join(': '));
-    switch(flag) {
-      case constant.flag.TRACK:
-        if (!result) {
-          that.server.users[trackUser].idle -= 1;
-          logger.debug('User: ' + trackUser + ' Idle: ' + that.server.users[trackUser].idle);
-          if (that.server.users[trackUser].idle === 0) {
+    var user = that.server.users[trackUser];
+    if (typeof user !== 'undefined') {
+      switch(flag) {
+        case constant.flag.TRACK:
+          if (!result) {
+          user.idle -= 1;
+          logger.debug('User: ' + trackUser + ' Idle: ' + user.idle);
+          if (user.idle === 0) {
             that.server.notify(trackUser, constant.code.OK, constant.action.UNTRACK);
-            that.server.users[trackUser].idle = options.broker.idle;
+            user.idle = options.broker.idle;
             that.addSchedule(trackUser);
           }
         } else {
-          that.server.users[trackUser].idle = options.broker.idle;
+          user.idle = options.broker.idle;
         }
         break;
-      case constant.flag.CHECK:
-        if (result) {
+        case constant.flag.CHECK:
+          if (result) {
           that.server.notify(trackUser, constant.code.OK, constant.action.TRACK);
-          that.server.users[trackUser].idle = options.broker.idle;
+          user.idle = options.broker.idle;
         } else {
           that.server.notify(trackUser, constant.code.OK, constant.action.UNTRACK);
-          that.server.users[trackUser].idle = options.broker.idle;
+          user.idle = options.broker.idle;
           that.addSchedule(trackUser);
         }
         break;
+      }
     }
   });
 }
