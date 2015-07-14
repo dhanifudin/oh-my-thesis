@@ -46,6 +46,7 @@
           }
           util.log('New location, Lat: ' + track.lat + ' Lng: ' + track.lng);
         }
+        util.log(that.markers[track.user]);
       }
 
       function getMarker(level) {
@@ -70,6 +71,7 @@
             marker.markerColor = 'white';
             break;
         }
+        util.log('getMarker color: ' + marker.markerColor + 'Level: ' + level)
         return marker;
       }
 

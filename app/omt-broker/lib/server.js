@@ -49,9 +49,28 @@ Server.prototype.filter = function(clientId, payload, cb) {
     var track = JSON.parse(payload);
     var tasks = [];
     Object.keys(that.users).forEach(function(currentUser) {
-      tasks.push(taskUser(that, trackUser, currentUser, track));
+      tasks.push(taskUser(that, trackUser, currentUser, track, that.resolution));
     });
     async.waterfall(tasks, function(err, result) {
+      /* if (result) { */
+      /*   if (that.resolution) { */
+      /*     resolution.getLocation(currentUser, trackUser, { */
+      /*       lat: track.lat, */
+      /*       lng: track.lng */
+      /*     }, function(err, level, location) { */
+      /*       track.level = level; */
+      /*       if (location != null) { */
+      /*         track.lat = location.lat; */
+      /*         track.lng = location.lng; */
+      /*       } */
+      /*       that.notify(currentUser, constant.code.OK, constant.action.TRACK, */
+      /*                   track); */
+      /*     }) */
+      /*   } else { */
+      /*     that.notify(currentUser, constant.code.OK, constant.action.TRACK, */
+      /*                 track); */
+      /*   } */
+      /* } */
       cb(trackUser, result, track.flag);
     });
   } catch(e) {
@@ -78,6 +97,7 @@ function taskUser(instance, trackUser, currentUser, track, isResolution) {
           tasks.push(taskFilter(trackUser, track, filter))
         });
         async.series(tasks, function(err, results) {
+          logger.debug('isResolution: ' + isResolution);
           if (err) {
             logger.debug(err);
             callback(err, false);
@@ -206,7 +226,7 @@ function filterByArea(track, area, callback) {
     if (err)
       callback(err, false);
     else {
-      var result = rows > 0;
+      var result = rows.length > 0;
       callback(null, result);
     }
   });

@@ -4,7 +4,7 @@
 	<string name="username_text">Username</string>
 
 	<!-- Settings start -->
-	<string name="server_setting">cabefile.com</string>
+	<string name="server_setting">192.168.1.212</string>
 	<string name="port_setting">1883</string>
 	<!-- Settings end -->
 

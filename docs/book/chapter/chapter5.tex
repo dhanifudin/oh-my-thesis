@@ -1,3 +1,99 @@
 \chapter{\babLima}
+
+% Kesimpulan {{{ %
 \section{Kesimpulan}
+
+Dari hasil pengujian dan analisis hasil yang telah dilakukan pada penelitian
+ini, maka dapat ditarik kesimpulan sebagai berikut:
+
+\begin{enumerate}[noitemsep, nolistsep]
+
+\item Penggunaan metode adaptif pada \tracking~dengan memperhatikan ketertarikan
+  \subscriber~pada lingkungan \pubsub~dapat meningkatkan efisiensi penggunaan
+  CPU, penggunaan \bandwidth~maupun \latency. Tetapi mengalami kenaikan dalam
+  penggunaan RAM.
+
+  \item Penambahan jumlah \publisher~dan \subscriber~cenderung akan menyebabkan
+    terjadinya peningkatan penggunaan CPU, RAM, \bandwidth~maupun \latency~pada
+    metode non-adaptif. Pada metode adaptif, dipengaruhi juga dengan adanya
+    ketertarikan konten informasi oleh \subscriber.
+
+  \item Penggunaan CPU pada metode adaptif lebih baik jika dibandingkan dengan
+    metode non-adaptif. Hal ini dibuktikan dengan hasil percobaan pada
+    Gambar~\ref{fig:3gcpu_5}, Gambar~\ref{fig:3gcpu_10}, Gambar~\ref{fig:cpu_5}
+    serta Gambar~\ref{fig:cpu_10}. Rata-rata penggunaan CPU untuk metode adaptif
+    4,3 - 4,9 \%, sedangkan metode non-adaptif 13 - 15 \% untuk 5 \subscriber.
+    Untuk 10 \subscriber, metode adaptif 6 - 7 \% dan non-adaptif 15 - 17 \%.
+
+  \item Pada umumnya beban RAM pada metode adaptif cenderung lebih tinggi
+    dibandingan dengan non-adaptif. Hal ini ditunjukkan dengan hasil percobaan
+    pada Gambar~\ref{fig:3gram_5}, Gambar~\ref{fig:3gram_10},
+    Gambar~\ref{fig:ram_5} dan Gambar~\ref{fig:ram_10}. Terjadi peningkatan
+    penggunaan RAM sebesar 2 - 3,9 \% pada metode adaptif.
+
+  \item Adanya modul \idle~\manager~pada metode adaptif dapat mempengaruhi
+    kenaikan beban penggunaan RAM \server. Hal ini disebabkan adanya beban
+    tambahan dalam proses penjadwalan proses pengecekan pada \publisher~yang
+    sedang \idle.
+
+  \item Penggunaan \bandwidth~pada metode adaptif lebih baik jika dibandingkan
+    dengan metode non-adaptif. Hal ini dibuktikan dengan hasil percobaan pada
+    Gambar~\ref{fig:3gbandwidth_5}, Gambar~\ref{fig:3gbandwidth_10},
+    Gambar~\ref{fig:bandwidth_5} dan Gambar~\ref{fig:bandwidth_10}. Adanya
+    efisiensi penggunaan \bandwidth~untuk metode adaptif sebesar 44 - 60 \%.
+
+  % \item Penggunaan \bandwidth~pada metode adaptif lebih baik jika dibandingkan
+  %   dengan metode non-adaptif. Hal ini dibuktikan dengan hasil percobaan pada
+  %   Gambar~\ref{fig:3gbandwidth_5}, Gambar~\ref{fig:3gbandwidth_10},
+  %   Gambar~\ref{fig:bandwidth_5} dan Gambar~\ref{fig:bandwidth_10}. Rata-rata
+  %   \bandwidth~untuk metode adaptif 1805,975 bytes/detik untuk 5
+  %   \subscriber~pada jaringan 3G dan 1813,333 bytes/detik pada jaringan Wi-Fi.
+  %   Sedangkan metode non-adaptif 4598,6 bytes/detik pada jaringan 3G dan
+  %   4584,952 bytes/detik. Untuk 10 \subscriber, metode adaptif 2872,634
+  %   bytes/detik pada jaringan 3G dan 2916,761 bytes/detik. Sedangkan untuk
+  %   metode non-adaptif 5246,973 bytes/detik dan 5234,662 bytes/detik.
+
+  % \item Beban RAM pada metode adaptif cenderung lebih tinggi dibandingan dengan
+  %   non-adaptif. Pada jaringan 3G untuk 5 \subscriber~dengan metode adaptif
+  %   sebesar 56898843,255 bytes lebih besar dibandingkan dengan non-adaptif
+  %   sebesar 54783969,95 bytes. Sedangkan untuk 10 \subscriber~metode adaptif
+  %   sebesar 55474349.156 bytes dan non-adaptif sebesar 56253726,151 bytes. Hal
+  %   ini dibuktikan dengan hasil percobaan pada Gambar~\ref{fig:3gbandwidth_5}
+  %   dan Gambar~\ref{fig:3gbandwidth_10}. Pada jaringan Wi-Fi untuk 5
+  %   \subscriber, metode adaptif sebesar 56818395,783 bytes dan metode
+  %   non-adaptif sebesar 54579197,957 bytes. Untuk 10 \subscriber, metode adaptif
+  %   sebesar 55797926,392 bytes dan metode non-adaptif sebesar 54647938,670
+  %   bytes.
+
+  % \item Terjadi penurunan \latency~dalam pengaplikasian metode adaptif
+  %   dibandingkan metode non-adaptif. Pada jaringan 3G untuk 5 \subscriber,
+  %   rata-rata \latency~metode adaptif sebesar 309.82 ms dan untuk metode
+  %   non-adaptif sebesar 542,789 ms. Untuk 10 \subscriber~, rata-rata
+  %   \latency~metode adaptif sebesar 204,980 ms dan untuk metode non-adaptif
+  %   sebesar 764,860 ms. Hal ini ditunjukkan dengan hasil uji coba \latency, pada
+  %   Gambar~\ref{fig:3glatency_5} dan Gambar~\ref{fig:3glatency_10}. Pada
+  %   jaringan Wi-Fi, rata-rata \latency~untuk metode adaptif sebesar 204,644 ms
+  %   dan untuk metode non-adaptif sebesar 248,150 ms. Untuk 10 \subscriber,
+  %   metode adaptif sebesar 170,952 ms dan metode non-adaptif sebesar 466,780 ms.
+  %   Hal ini ditunjukkan pada hasil uji coba Gambar~\ref{fig:latency_5} dan
+  %   Gambar~\ref{fig:latency_10}.
+
+  \item Terjadi penurunan \latency~dalam pengaplikasian metode adaptif
+    dibandingkan metode non-adaptif. Hal ini ditunjukkan dengan hasil percobaan
+    pada Gambar~\ref{fig:3glatency_5}, Gambar~\ref{fig:3glatency_10},
+    Gambar~\ref{fig:latency_5} serta Gambar~\ref{fig:latency_10}. Terdapat
+    perbaikan \latency~sebesar 17 - 73 \% pada metode adaptif.
+\end{enumerate}
+
+% }}} Kesimpulan %
+
+% Saran {{{ %
 \section{Saran}
+
+Topik penelitian \tracking~masih menjadi topik yang menarik untuk dikembangkan.
+Pada proses ini dapat disisipkan informasi-informasi tambahan sehingga nantinya
+dapat diolah. Penambahan informasi-informasi ini tentu harus juga memperhatikan
+\privacy~dari pengguna. Informasi seperti deteksi aktifitas, kebiasaan pengguna
+yang nantinya dapat digabungkan dengan informasi di sekitar.
+
+% }}} Saran %

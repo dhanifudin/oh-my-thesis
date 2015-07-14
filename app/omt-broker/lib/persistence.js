@@ -23,8 +23,8 @@ Persistence.prototype.getLevels = function(cb) {
 Persistence.prototype.area = function(code, location, callback) {
   var params = [
     code,
+    location.lng,
     location.lat,
-    location.lng
   ];
   this.execute(
     'SELECT * FROM location WHERE code = ? \

@@ -17,23 +17,41 @@ proses \tracking~yang efisien namun tetap akurat.
 \subsection{\f{Tracking} Pada Lingkungan Bergerak}
 
 Proses \tracking~dikatakan ideal, apabila dapat mengirimkan perubahan lokasi
-secara \f{robust} dalam kondisi yang berubah-ubah. Beberapa penelitian sebelumnya
-(Civilis dkk, 2005) (Leonhardi dkk, 2001) (Leonhardi dkk, 2002) telah mengusulkan
-adanya \tracking~secara dinamis untuk memperbarui lokasi. Dalam sistem EnTracked
-(Kjaergaard dkk, 2010) sebuah sistem \tracking~yang efisien pada lingkungan
-perangkat bergerak untuk target tunggal. Sistem ini dapat secara adaptif
-menentukan kebutuhan presisi penentuan lokasi pada lingkungan bergerak. Penentuan
-lokasi dapat memanfaatkan sensor GPS atau estimasi kecepatan obyek.
+secara \f{robust} dalam kondisi yang berubah-ubah. Beberapa penelitian
+sebelumnya (Civilis dkk, 2005) (Leonhardi dkk, 2001) (Leonhardi dkk, 2002) telah
+mengusulkan adanya \tracking~secara dinamis untuk memperbarui lokasi. Dalam
+sistem EnTracked (Kjaergaard dkk, 2010) Gambar~\ref{fig:entracked} sebuah sistem
+\tracking~yang efisien pada lingkungan perangkat bergerak untuk target
+tunggal. Sistem ini dapat secara adaptif menentukan kebutuhan presisi penentuan
+lokasi pada lingkungan bergerak. Penentuan lokasi dapat memanfaatkan sensor GPS
+atau estimasi kecepatan obyek.
+
+Pada sistem Entracked dapat secara adaptif dalam melakukan \f{reporting
+  protocol}. Sistem EnTracked memanfaatkan sensor \f{accelerometer} untuk
+meminimalkan penggunaan GPS. Pada Gambar~\ref{fig:entracked} ditunjukkan
+mekanisme EnTracked dalam mendapatkan informasi lokasi. Ketika perangkat
+bergerak, dilakukan estimasi kecepatan sehingga diketahui lokasi berikutnya.
+Ketika mencapai batas waktu tertentu, digunakan sensor GPS kembali. Sistem
+EnTracked diaplikasikan pada sitem \tracking~tunggal.
+
+\noindent
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.50]
+  {images/2-entracked.png}
+\caption{Sistem \Tracking~EnTracked (Kjaergaard, 2010)}
+\label{fig:entracked}
+\end{figure}
 
 Target \tracking~dapat melibatkan satu obyek maupun lebih. Semakin banyak obyek
 yang di-\tracking~maka semakin besar energi yang dibutuhkan dan pembaharuan
 posisi yang terjadi. Perbedaan arah pergerakan, variasi kecepatan serta
 konektifitas pada jaringan tak handal menjadi faktor utama dalam
-\tracking~banyak obyek. (Ashfaque dkk, 2010) mengajukan metode
-target kinematika dalam \tracking~pada lingkungan WSN (\wsn). Proses
-\tracking~hanya aktif ketika sebuah obyek memasuki area tertentu.  Hanya pada
-area \tracking, node sensor WSN yang aktif. Hal ini dapat mengurangi penggunaan
-energi dan pengurangan \f{latency} pada jaringan.
+\tracking~banyak obyek. (Ashfaque dkk, 2010) mengajukan metode target kinematika
+dalam \tracking~pada lingkungan WSN (\wsn). Proses \tracking~hanya aktif ketika
+sebuah obyek memasuki area tertentu.  Hanya pada area \tracking, node sensor WSN
+yang aktif. Hal ini dapat mengurangi penggunaan energi dan pengurangan
+\f{latency} pada jaringan.
 
 \subsection{\f{Update Protocol}}
 
@@ -49,7 +67,7 @@ yang diberikan. \f{Update protocol} dapat diklasifikasikan dalam tiga jenis, yai
   \includegraphics[scale=0.60]
   {images/2-klasifikasi}
 \caption{Klasifikasi \f{Update Protocol} (Leonhardi dkk, 2001)}
-\label{fig:sistem}
+\label{fig:update_protocols}
 \end{figure}
 
 % \noindent
@@ -347,7 +365,7 @@ Gambar~\ref{fig:decoupling}.
 \begin{figure}
     \centering
     \includegraphics[scale=0.10]
-        {images/decoupling.png}
+			{images/2-decoupling.png}
     \caption{Jenis-jenis \f{decoupling} pada arsitektur \pubsub~(Eugster dkk, 2003)}
     \label{fig:decoupling}
 \end{figure}
@@ -383,43 +401,44 @@ Dua skema yang paling banyak digunakan yaitu, \topicbased~serta \contentbased.
         yang menyaring suatu \event~\pubsub~berdasarkan jenisnya.
 \end{enumerate}
 
-%\subsection{\PubSub~pada Lingkungan Perangkat Bergerak}
+\subsection{\PubSub~pada Lingkungan Perangkat Bergerak}
 
-%Kebanyakan penelitian dalam sistem \pubsub~sejauh ini berfokus pada jaringan
-%tak bergerak. Gucola dkk (Gucola dkk, 2000) berpendapat bahwa kelebihan sistem
-%\pubsub~dapat diterapkan dalam lingkungan perangkat bergerak maupun nirkabel.
-%Sifat dinamis pada sistem \pubsub~memungkinkan sistem untuk cepat beradaptasi
-%dengan kondisi koneksi yang tidak stabil pada \f{mobile node}, yang merupakan
-%karakteristik dari jaringan selular. Sifat asinkronitas sangat membantu, karena
-%perangkat bergerak yang sering dimatikan atau terputus dari jaringan untuk
-%jangka waktu yang lama. Ditambah lagi karateristik perangkat nirkabel yang
-%memiliki kemampuan serta \f{bandwidth} yang terbatas. Sifat \f{multicasting}
-%sistem \pubsub~membantu dalam sistem skala besar.
+Kebanyakan penelitian dalam sistem \pubsub~sejauh ini berfokus pada jaringan
+tak bergerak. Gucola dkk (Gucola dkk, 2000) berpendapat bahwa kelebihan sistem
+\pubsub~dapat diterapkan dalam lingkungan perangkat bergerak maupun nirkabel.
+Sifat dinamis pada sistem \pubsub~memungkinkan sistem untuk cepat beradaptasi
+dengan kondisi koneksi yang tidak stabil pada \f{mobile node}, yang merupakan
+karakteristik dari jaringan selular. Sifat asinkronitas sangat membantu, karena
+perangkat bergerak yang sering dimatikan atau terputus dari jaringan untuk
+jangka waktu yang lama. Ditambah lagi karateristik perangkat nirkabel yang
+memiliki kemampuan serta \f{bandwidth} yang terbatas. Sifat \f{multicasting}
+sistem \pubsub~membantu dalam sistem skala besar.
 
-%Dengan meningkatnya popularitas perangkat bergerak, perlu adanya adaptasi dalam
-%sistem \pubsub~pada lingkungan perangkat bergerak (Huang dkk, 2001)
-%(Gambar~\ref{fig:content-based}). Sebagai contoh penerapannya, pada medan
-%perang militer, ribuan sensor nirkabel dan mobile melaporkan segala macam
-%informasi mulai dari lokasi pasukan musuh serta kondisi peralatan perang.
-%Seorang tentara mungkin perlu mengetahui lokasi pasukan musuh terdekat atau
-%timnya.  Hal-hal di atas memerlukan penyebaran komunikasi berskalabitas tinggi
-%dalam infrastruktur dinamis yang sangat cocok dengan sistem \pubsub.
+Dengan meningkatnya popularitas perangkat bergerak, perlu adanya adaptasi dalam
+sistem \pubsub~pada lingkungan perangkat bergerak (Huang dkk, 2001)
+(Gambar~\ref{fig:content-based}). Sebagai contoh penerapannya, pada medan
+perang militer, ribuan sensor nirkabel dan mobile melaporkan segala macam
+informasi mulai dari lokasi pasukan musuh serta kondisi peralatan perang.
+Seorang tentara mungkin perlu mengetahui lokasi pasukan musuh terdekat atau
+timnya.  Hal-hal di atas memerlukan penyebaran komunikasi berskalabitas tinggi
+dalam infrastruktur dinamis yang sangat cocok dengan sistem \pubsub.
 
-%\begin{figure}
-    %\centering
-    %\includegraphics[scale=0.40]
-        %{pics/event-brokering-system.png}
-    %\caption{Sistem \f{content-based publish/subscribe (Huang dkk, 2001)}}
-    %\label{fig:content-based}
-%\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.40]
+        {images/2-event-brokering-system.png}
+    \caption{Sistem \f{content-based publish/subscribe (Huang dkk, 2001)}}
+    \label{fig:content-based}
+\end{figure}
 
-%\begin{figure}
-    %\centering
-    %\includegraphics[scale=0.40]
-        %{pics/centralized-architecture.png}
-    %\caption{Arsitektur terpusat, pencocokan serta penyaringan dilakukan sebuah server}
-    %\label{fig:central}
-%\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.40]
+        {images/2-centralized-architecture.png}
+    \caption{Arsitektur terpusat, pencocokan serta penyaringan dilakukan sebuah
+      server (Huang dkk, 2001)}
+    \label{fig:central}
+\end{figure}
 
 \subsection{Protokol MQTT}
 
@@ -459,124 +478,124 @@ pengertian yang lebih sederhana, sebuah sistem disebut \context~\aware~jika
 sistem menggunakan \context~untuk memberikan informasi yang relevan kepada
 pengguna, dimana relevansi tergantung pada kegiatan pengguna.
 
-\subsection{\Acc}
+% \subsection{\Acc}
 
-Sensor \acc~adalah sebuah alat yang berfungsi untuk mengukur percepatan dan
-getaran akibat gravitasi bumi. Percepatan merupakan suatu keadaan berubahnya
-kecepatan terhadap waktu dimana terjadi perubahan kecepatan yang semakin
-bertambah daripada kecepatan sebelumnya.  Hal ini disebut dengan
-\f{acceleration}. Percepatan juga bergantung pada arah/orientasi karena
-merupakan penurunan kecepatan yang merupakan besaran vektor. Berubahnya arah
-pergerakan suatu benda akan menimbulkan percepatan pula. Pembagian sumbu pada
-\acc~dibagi menjadi sumbu \f{x}, \f{y} dan \f{z} (\f{triaxial accelerometer}).
-Aktifitas pengguna yang berbeda menghasilkan nilai yang berbeda pula,
-dipengaruhi interaksi antara pengguna dan sensor.
+% Sensor \acc~adalah sebuah alat yang berfungsi untuk mengukur percepatan dan
+% getaran akibat gravitasi bumi. Percepatan merupakan suatu keadaan berubahnya
+% kecepatan terhadap waktu dimana terjadi perubahan kecepatan yang semakin
+% bertambah daripada kecepatan sebelumnya.  Hal ini disebut dengan
+% \f{acceleration}. Percepatan juga bergantung pada arah/orientasi karena
+% merupakan penurunan kecepatan yang merupakan besaran vektor. Berubahnya arah
+% pergerakan suatu benda akan menimbulkan percepatan pula. Pembagian sumbu pada
+% \acc~dibagi menjadi sumbu \f{x}, \f{y} dan \f{z} (\f{triaxial accelerometer}).
+% Aktifitas pengguna yang berbeda menghasilkan nilai yang berbeda pula,
+% dipengaruhi interaksi antara pengguna dan sensor.
 
-Dengan memanfaatkan sensor \acc~dapat dideteksi aktifitas seorang pengguna.
-Randell dkk (Randell dkk, 2000) mengumpulkan data sampel sumbu \f{x} dan \f{y}
-pada \acc. Data sampel dari 10 orang, berisi tentang aktifitas pengguna dalam
-berbagai aktifitas: berjalan, berlari, duduk, berjalan naik tangga, turun
-tangga dan berdiri. Dari data yang dikumpulkan, dianalisa untuk mengetahui pola
-aktifitas menggunakan algoritme \f{clustering}.
+% Dengan memanfaatkan sensor \acc~dapat dideteksi aktifitas seorang pengguna.
+% Randell dkk (Randell dkk, 2000) mengumpulkan data sampel sumbu \f{x} dan \f{y}
+% pada \acc. Data sampel dari 10 orang, berisi tentang aktifitas pengguna dalam
+% berbagai aktifitas: berjalan, berlari, duduk, berjalan naik tangga, turun
+% tangga dan berdiri. Dari data yang dikumpulkan, dianalisa untuk mengetahui pola
+% aktifitas menggunakan algoritme \f{clustering}.
 
-\subsection{\f{Activity Recognition}}
+% \subsection{\f{Activity Recognition}}
 
-\f{Activity recognition} merupakan teknik yang digunakan dalam proses
-klasifikasi aktifitas fisik pengguna (berjalan, duduk atau berlari). Dalam
-proses ini terbagi menjadi beberapa tahapan, yaitu: \f{data collection},
-\f{feature extraction} dan \f{data interpretation}. Untuk melakukan sebuah
-klasifikasi diperlukan adanya data.  Data yang diperoleh disesuaikan dengan
-\context~yang digunakan. Pada umumnya pengambilan data dilakukan dengan
-menggunakan sebuah alat yang berupa sensor. Dari data yang didapatkan melalui
-sensor, proses selanjutnya adalah ekstraksi data. Data yang akan diklasifikasi
-diolah sedemikian rupa sehingga data tidak terlalu konvergen atau divergen.
-Kemudian tahapan terakhir yaitu klasifikasi, tahapan yang terpenting dalam
-pengenalan aktifitas pengguna.
+% \f{Activity recognition} merupakan teknik yang digunakan dalam proses
+% klasifikasi aktifitas fisik pengguna (berjalan, duduk atau berlari). Dalam
+% proses ini terbagi menjadi beberapa tahapan, yaitu: \f{data collection},
+% \f{feature extraction} dan \f{data interpretation}. Untuk melakukan sebuah
+% klasifikasi diperlukan adanya data.  Data yang diperoleh disesuaikan dengan
+% \context~yang digunakan. Pada umumnya pengambilan data dilakukan dengan
+% menggunakan sebuah alat yang berupa sensor. Dari data yang didapatkan melalui
+% sensor, proses selanjutnya adalah ekstraksi data. Data yang akan diklasifikasi
+% diolah sedemikian rupa sehingga data tidak terlalu konvergen atau divergen.
+% Kemudian tahapan terakhir yaitu klasifikasi, tahapan yang terpenting dalam
+% pengenalan aktifitas pengguna.
 
-Mengacu pada konsep \tracking~yang ideal, maka diperlukan mekanisme penentuan
-lokasi yang ramah energi. Suatu mekanisme yang dapat secara adaptif menentukan
-tingkat kebutuhan presisi suatu lokasi. Dalam kondisi bergerak, diperlukan
-ketelitian posisi yang lebih baik. Pergerakan dapat dideteksi memanfaatkan
-sensor \acc~yang telah diajukan oleh You dkk (You dkk, 2008). Mekanisme ini
-kemudian diadopsi pada sistem EnTracked (Kjaergaard dkk, 2009). Sistem
-EnTracked hanya mendeteksi dua kondisi pergerakan, yaitu: diam berdiri atau
-bergerak. Ketika terjadi pergerakan yang terdeteksi, perubahan lokasi
-ditentukan menggunakan sensor GPS. Diagram alir untuk deteksi pergerakan
-\f{tracking} dipaparkan pada Gambar~\ref{fig:movement}.
+% Mengacu pada konsep \tracking~yang ideal, maka diperlukan mekanisme penentuan
+% lokasi yang ramah energi. Suatu mekanisme yang dapat secara adaptif menentukan
+% tingkat kebutuhan presisi suatu lokasi. Dalam kondisi bergerak, diperlukan
+% ketelitian posisi yang lebih baik. Pergerakan dapat dideteksi memanfaatkan
+% sensor \acc~yang telah diajukan oleh You dkk (You dkk, 2008). Mekanisme ini
+% kemudian diadopsi pada sistem EnTracked (Kjaergaard dkk, 2009). Sistem
+% EnTracked hanya mendeteksi dua kondisi pergerakan, yaitu: diam berdiri atau
+% bergerak. Ketika terjadi pergerakan yang terdeteksi, perubahan lokasi
+% ditentukan menggunakan sensor GPS. Diagram alir untuk deteksi pergerakan
+% \f{tracking} dipaparkan pada Gambar~\ref{fig:movement}.
 
-\begin{figure}
-    \centering
-    \begin{tikzpicture}[font=\small, node distance=2cm, auto]
-        \node[cloud] (start) {Start};
-        \node[block, below of=start] (gpspos) {Get GPS Position};
-        \node[block, below of=gpspos] (report) {Report Position to Server};
-        \node[decision, below of=report] (device) {Is device moving?};
-        \node[block, right=3cm of start] (speedgps) {Determine Speed with GPS};
-        \node[block, below of=speedgps] (timelimit) {Determine Time Limit};
-        \node[block, below of=timelimit] (consumption) {Minimize Consumption};
-        \node[block, below of=consumption] (schedule) {Schedule Features};
-        \node[decision, below of=schedule] (schedulegps) {Schedule GPS now?};
+% \begin{figure}
+%     \centering
+%     \begin{tikzpicture}[font=\small, node distance=2cm, auto]
+%         \node[cloud] (start) {Start};
+%         \node[block, below of=start] (gpspos) {Get GPS Position};
+%         \node[block, below of=gpspos] (report) {Report Position to Server};
+%         \node[decision, below of=report] (device) {Is device moving?};
+%         \node[block, right=3cm of start] (speedgps) {Determine Speed with GPS};
+%         \node[block, below of=speedgps] (timelimit) {Determine Time Limit};
+%         \node[block, below of=timelimit] (consumption) {Minimize Consumption};
+%         \node[block, below of=consumption] (schedule) {Schedule Features};
+%         \node[decision, below of=schedule] (schedulegps) {Schedule GPS now?};
 
-        \coordinate(A) at ($ (gpspos) + (-3, 0) $);
-        \coordinate(B) at ($ (report) + (-2.5, -1.5) $);
-        \coordinate(C) at ($ (start) + (2.5, 0) $);
-        \coordinate(D) at ($ (schedule) + (3, -1.5) $);
+%         \coordinate(A) at ($ (gpspos) + (-3, 0) $);
+%         \coordinate(B) at ($ (report) + (-2.5, -1.5) $);
+%         \coordinate(C) at ($ (start) + (2.5, 0) $);
+%         \coordinate(D) at ($ (schedule) + (3, -1.5) $);
 
-        \path[line] (start) -- (gpspos);
-        \path[line] (gpspos) -- (report);
-        \path[line] (report) -- (device);
+%         \path[line] (start) -- (gpspos);
+%         \path[line] (gpspos) -- (report);
+%         \path[line] (report) -- (device);
 
-        \path[line] (device.west) -| (B) -- node [near start] {False} ($(report) + (0,-1.5)$);
-        \path[line] (device.east) -| (C) -- node [near start] {True} (speedgps.west);
-        \path[line] (speedgps) -- (timelimit);
-        \path[line] (timelimit) -- (consumption);
-        \path[line] (consumption) -- (schedule);
-        \path[line] (schedule) -- (schedulegps);
+%         \path[line] (device.west) -| (B) -- node [near start] {False} ($(report) + (0,-1.5)$);
+%         \path[line] (device.east) -| (C) -- node [near start] {True} (speedgps.west);
+%         \path[line] (speedgps) -- (timelimit);
+%         \path[line] (timelimit) -- (consumption);
+%         \path[line] (consumption) -- (schedule);
+%         \path[line] (schedule) -- (schedulegps);
 
-        \path[line] (schedulegps) -| (A) -- node [near start] {True} (gpspos);
-        \path[line] (schedulegps) -| (D) -- node [near start] {False} ($(schedule) +(0,-1.5)$);
-    \end{tikzpicture}
-    \caption{Diagram alir untuk mendeteksi pergerakan (Kjaergaard dkk, 2010)}
-    \label{fig:movement}
-\end{figure}
+%         \path[line] (schedulegps) -| (A) -- node [near start] {True} (gpspos);
+%         \path[line] (schedulegps) -| (D) -- node [near start] {False} ($(schedule) +(0,-1.5)$);
+%     \end{tikzpicture}
+%     \caption{Diagram alir untuk mendeteksi pergerakan (Kjaergaard dkk, 2010)}
+%     \label{fig:movement}
+% \end{figure}
 
-\section{Location API Sistem Operasi Android}
+% \section{Location API Sistem Operasi Android}
 
-Saat ini, \smartphone~seperti Android sudah dilengkapi dengan GPS untuk
-menentukan lokasi. Dalam menentukan lokasi, tidak hanya memanfaatkan GPS saja,
-tetapi dapat juga dengan memanfaatkan Cell-Id atau WiFi. Sistem operasi Android
-sudah menyediakan \f{Location API}, sebuah API (\api) yang dapat membantu dalam
-menentukan lokasi. API ini terdapat dalam \f{package} \f{android.location}.
-Terdapat dua kelas utama yang berperan dalam penentuan lokasi yaitu \locM~dan
-\locP. \Class~\locM~menyediakan akses layanan lokasi pada Android.  Layanan ini
-memungkinkan untuk mengakses penyedia lokasi. Sedangkan \class~\locP~menentukan
-metode apa yang digunakan untuk memperoleh lokasi. Beberapa metode yang
-tersedia dijabarkan pada Tabel~\ref{tab:provider}.
+% Saat ini, \smartphone~seperti Android sudah dilengkapi dengan GPS untuk
+% menentukan lokasi. Dalam menentukan lokasi, tidak hanya memanfaatkan GPS saja,
+% tetapi dapat juga dengan memanfaatkan Cell-Id atau WiFi. Sistem operasi Android
+% sudah menyediakan \f{Location API}, sebuah API (\api) yang dapat membantu dalam
+% menentukan lokasi. API ini terdapat dalam \f{package} \f{android.location}.
+% Terdapat dua kelas utama yang berperan dalam penentuan lokasi yaitu \locM~dan
+% \locP. \Class~\locM~menyediakan akses layanan lokasi pada Android.  Layanan ini
+% memungkinkan untuk mengakses penyedia lokasi. Sedangkan \class~\locP~menentukan
+% metode apa yang digunakan untuk memperoleh lokasi. Beberapa metode yang
+% tersedia dijabarkan pada Tabel~\ref{tab:provider}.
 
-\begin{table}
-\centering
-\caption{Jenis-jenis \locP}
-\label{tab:provider}
-\begin{tabular}{l p{9cm}}
-        \hline
-        \locP~& Deskripsi \\
-        \hline
-        network & \Provider~ini menentukan lokasi berdasarkan ketersedian menara seluler
-        dan akses WiFi. Mungkin memiliki presisi lebih tinggi dibandingan dengan GPS
-        dalam ruang tertutup.\\
-        gps & \Provider~ini menentukan lokasi menggunakan satelit. Tergantung pada kondisi,
-        \provider~ini mungkin memerlukan waktu untuk mendapatkan lokasi yang tepat.
-        Pada umumnya memliki presisi lebih baik dibandingan dengan \network.\\
-        passive & \Provider~ini dapat digunakan secara pasif dalam menerima perubahan
-        lokasi di saat aplikasi atau layanan lain meminta perubahan posisi. \Provider~ini
-        mengembalikan lokasi yang dihasilkan oleh \provider~lain.\\
-        \hline
-    \end{tabular}
-\end{table}
+% \begin{table}
+% \centering
+% \caption{Jenis-jenis \locP}
+% \label{tab:provider}
+% \begin{tabular}{l p{9cm}}
+%         \hline
+%         \locP~& Deskripsi \\
+%         \hline
+%         network & \Provider~ini menentukan lokasi berdasarkan ketersedian menara seluler
+%         dan akses WiFi. Mungkin memiliki presisi lebih tinggi dibandingan dengan GPS
+%         dalam ruang tertutup.\\
+%         gps & \Provider~ini menentukan lokasi menggunakan satelit. Tergantung pada kondisi,
+%         \provider~ini mungkin memerlukan waktu untuk mendapatkan lokasi yang tepat.
+%         Pada umumnya memliki presisi lebih baik dibandingan dengan \network.\\
+%         passive & \Provider~ini dapat digunakan secara pasif dalam menerima perubahan
+%         lokasi di saat aplikasi atau layanan lain meminta perubahan posisi. \Provider~ini
+%         mengembalikan lokasi yang dihasilkan oleh \provider~lain.\\
+%         \hline
+%     \end{tabular}
+% \end{table}
 
-Selain metode-metode \provider~di atas, penentuan lokasi dapat dilakukan secara
-fleksibel dengan menggunakan \provider~terbaik menggunakan \f{Criteria}. Dalam
-penentuan lokasi \provider~membutuhkan akses dari sistem pada android, yang
-diatur dalam ACCESS\_COARSE\_LOCATION serta ACCESS\_FINE\_LOCATION
-(\provider~gps). Ketika akses ACCESS\_FINE\_LOCATION digunakan, akses
-ACCESS\_COARSE\_LOCATION tidak diperlukan.
+% Selain metode-metode \provider~di atas, penentuan lokasi dapat dilakukan secara
+% fleksibel dengan menggunakan \provider~terbaik menggunakan \f{Criteria}. Dalam
+% penentuan lokasi \provider~membutuhkan akses dari sistem pada android, yang
+% diatur dalam ACCESS\_COARSE\_LOCATION serta ACCESS\_FINE\_LOCATION
+% (\provider~gps). Ketika akses ACCESS\_FINE\_LOCATION digunakan, akses
+% ACCESS\_COARSE\_LOCATION tidak diperlukan.

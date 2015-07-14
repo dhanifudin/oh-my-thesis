@@ -1,25 +1,21 @@
 var bunyan = require('bunyan');
 var util = require('util');
 
-var Log = function(namespace, path) {
+var Log = function(path) {
+  var filePath = util.format('./log/%s.log', path);
+
   this.logger = bunyan.createLogger({
-    name: namespace,
+    name: 'mosca-publisher',
     streams: [{
-      path: util.format('./log/%s.log', path)
+      path: filePath
     }]
   });
-  this.debug = require('debug')(namespace);
-};
+}
 
 Log.prototype.info = function(message) {
   this.logger.info(message);
-};
-
-Log.prototype.dump = function(message) {
-  var json = JSON.stringify(message, null, '  ');
-  this.debug(util.format('\n %s', json));
 }
 
-module.exports = function(namespace, path) {
-  return new Log(namespace, path);
-};
+module.exports = function(path) {
+  return new Log(path);
+}

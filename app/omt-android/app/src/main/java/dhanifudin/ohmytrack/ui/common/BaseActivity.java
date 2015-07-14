@@ -9,9 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import dhanifudin.ohmytrack.Application;
 import dhanifudin.ohmytrack.R;
+import dhanifudin.ohmytrack.model.entity.Preferences;
 import timber.log.Timber;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 /**
@@ -22,6 +25,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
 
+//    protected Application application;
+    protected Preferences preferences;
     protected HashMap<String, Fragment> fragments;
 
     @Override
@@ -30,7 +35,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         this.setContentView(getLayoutResource());
         ButterKnife.inject(this);
 
-        fragments = new HashMap<String, Fragment>();
+//        this.application = (Application) getApplicationContext();
+        this.preferences = Preferences.getInstance();
+        this.fragments = new HashMap<String, Fragment>();
 
         if (toolbar != null) {
             this.setSupportActionBar(toolbar);
@@ -67,6 +74,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         try {
             fragment = fragments.get(stringClass);
             if (fragment == null) {
+//                fragment = fragmentClass.getDeclaredConstructor(Application.class)
+//                        .newInstance(application);
                 fragment = fragmentClass.newInstance();
                 fragments.put(stringClass, fragment);
             }
@@ -93,4 +102,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected abstract int getLayoutResource();
+
+    public Preferences getPreferences() {
+        return preferences;
+    }
 }

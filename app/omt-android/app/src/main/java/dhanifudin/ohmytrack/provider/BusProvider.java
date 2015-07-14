@@ -15,4 +15,5 @@ public class BusProvider {
     public static Bus getInstance() {
         return instance;
     }
+
 }

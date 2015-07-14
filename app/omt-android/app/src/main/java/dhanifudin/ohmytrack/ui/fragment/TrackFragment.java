@@ -11,7 +11,7 @@ import butterknife.InjectView;
 import dhanifudin.ohmytrack.Application;
 import dhanifudin.ohmytrack.R;
 import dhanifudin.ohmytrack.adapter.TrackAdapter;
-import dhanifudin.ohmytrack.model.Track;
+import dhanifudin.ohmytrack.model.entity.Track;
 import dhanifudin.ohmytrack.ui.common.BaseFragment;
 import timber.log.Timber;
 
@@ -31,7 +31,7 @@ public class TrackFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Application.register(this);
+        application.register(this);
     }
 
     @Nullable
@@ -68,5 +68,10 @@ public class TrackFragment extends BaseFragment {
     @Override
     protected int getMenuLayoutResource() {
         return R.menu.menu_track;
+    }
+
+    @Override
+    protected boolean isHasMoreMenu() {
+        return true;
     }
 }

@@ -1,50 +1,72 @@
 var util = require('util');
+var debug = require('debug')('simple');
+var options = require('../options.json');
 
-var Simple = function(user, path) {
+var Simple = function(user) {
   this.user = user;
   this.client = null;
-  this.logger = require('./log')('simple', path);
-  this.logger.debug('User: ' + this.user);
+  debug('User: ' + user);
 };
 
-Simple.prototype.simulate = function(input, output) {
+Simple.prototype.publish = function(number, output) {
   var that = this;
-  var client = require('./client')(this.user, output);
-  var data = require(util.format('../data/track/%s.json', input));
-  var userdata = require(util.format('../data/user/%s.json', this.user));
-  client.connect(this.user);
+  var client = require('./client')(that.user, output);
+  var userdata = require(util.format('../data/publisher/%s.json', that.user));
+  var data = require(util.format('../data/track/%s.json', userdata.data));
+  client.connect();
   client.client.on('connect', function() {
-    userdata.tracks.forEach(function(track) {
-      client.track(track);
-    })
+    client.subscribe();
     client.client.on('message', function(topic, message) {
-      console.log([topic, message].join(': '));
+      debug([topic, message].join(': '));
     });
   });
 
   var index = 0;
   var interval = setInterval(function() {
     var packet = {
+      id: data[index].id,
       user: that.user,
       lat: data[index].lat,
       lng: data[index].lng,
       time: getUnixTime()
     };
 
-    client.publish('track', JSON.stringify(packet));
+    client.location(packet);
     index += 1;
-    if (index >= data.length) {
+    if ((index * options.client.interval) >= options.client.time) {
       clearInterval(interval);
       client.end();
     }
-  }, 1000);
+  }, options.client.interval);
+}
+
+Simple.prototype.subscribe = function(number, output) {
+  var that = this;
+  var client = require('./client')(that.user, output);
+  var userdata = require(util.format('../data/subscriber%s/%s.json', number, that.user));
+  var lattency = require('./lattency')(output);
+  client.connect();
+  client.client.on('connect', function() {
+    client.subscribe();
+    userdata.tracks.forEach(function(track) {
+      client.track(track);
+    });
+    client.client.on('message', function(topic, message) {
+      lattency.info(message);
+      debug([topic, message].join(': '));
+    });
+  });
+
+  setTimeout(function() {
+    client.end();
+  }, options.client.time + options.client.wait);
 }
 
 function getUnixTime() {
-  return Math.round(new Date().getTime() / 1000);
+  return new Date().getTime();
 }
 
-module.exports = function(user, path) {
-  return new Simple(user, path);
+module.exports = function(user) {
+  return new Simple(user);
 };
 

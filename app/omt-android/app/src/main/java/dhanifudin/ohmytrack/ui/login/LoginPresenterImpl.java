@@ -2,8 +2,8 @@ package dhanifudin.ohmytrack.ui.login;
 
 import android.content.Context;
 import android.text.TextUtils;
-import dhanifudin.ohmytrack.model.Preferences;
-import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import dhanifudin.ohmytrack.model.entity.Preferences;
+import dhanifudin.ohmytrack.provider.MqttProvider;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import timber.log.Timber;
 
@@ -11,18 +11,20 @@ import timber.log.Timber;
  * Created by icub on 5/5/15.
  */
 
-public class LoginPresenterImpl implements LoginPresenter, IMqttActionListener {
+public class LoginPresenterImpl implements LoginPresenter, LoginListener {
 
     private Context context;
     private LoginView loginView;
-    private LoginInteractor loginInteractor;
+//    private LoginInteractor loginInteractor;
     private Preferences preferences;
+    private MqttProvider mqttProvider;
 
     public LoginPresenterImpl(Context context, LoginView loginView) {
         this.context = context;
         this.loginView = loginView;
-        this.loginInteractor = new LoginInteractorImpl(context);
-        this.preferences = Preferences.getInstance(context);
+//        this.loginInteractor = new LoginInteractorImpl(context);
+        this.preferences = Preferences.getInstance();
+        this.mqttProvider = MqttProvider.getInstance();
     }
 
     @Override
@@ -30,7 +32,9 @@ public class LoginPresenterImpl implements LoginPresenter, IMqttActionListener {
         if (TextUtils.isEmpty(username)) {
             this.loginView.setUsernameError();
         } else {
-            this.loginInteractor.login(username, this);
+//            this.loginInteractor.login(username, this);
+            this.preferences.setUsername(username);
+            this.mqttProvider.connect(username, this);
         }
     }
 
@@ -46,18 +50,9 @@ public class LoginPresenterImpl implements LoginPresenter, IMqttActionListener {
         Timber.e(throwable, "Failed");
     }
 
-//    @Override
-//    public void onUsernameError() {
-//        this.loginView.setUsernameError();
-//    }
-//
-//    @Override
-//    public void onSucces(String username) {
-//        this.loginView.navigateToHome();
-//    }
-//
-//    @Override
-//    public void onFailure(Throwable e) {
-//        Timber.e(e, "Fail to connect");
-//    }
+    @Override
+    public void onUsernameError() {
+        this.loginView.setUsernameError();
+    }
+
 }

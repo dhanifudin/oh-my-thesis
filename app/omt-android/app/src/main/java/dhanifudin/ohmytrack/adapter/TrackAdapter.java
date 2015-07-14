@@ -9,7 +9,7 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import dhanifudin.ohmytrack.R;
-import dhanifudin.ohmytrack.model.Track;
+import dhanifudin.ohmytrack.model.entity.Track;
 
 import java.util.List;
 

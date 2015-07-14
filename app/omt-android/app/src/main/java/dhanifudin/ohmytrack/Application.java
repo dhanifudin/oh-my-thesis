@@ -1,7 +1,7 @@
 package dhanifudin.ohmytrack;
 
+import android.content.Context;
 import com.squareup.otto.Bus;
-import dhanifudin.ohmytrack.model.Preferences;
 import dhanifudin.ohmytrack.provider.BusProvider;
 import timber.log.Timber;
 
@@ -11,23 +11,35 @@ import timber.log.Timber;
 public class Application extends android.app.Application {
 
     private static final Bus bus = BusProvider.getInstance();
+    private static Context context;
+
+//    private static Application instance;
+//
+//    public static Application getInstance() {
+//        return instance;
+//    }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        Application.context = getApplicationContext();
         Timber.plant(new Timber.DebugTree());
     }
 
+    public static Context getContext() {
+        return context;
+    }
+
     //region Otto
-    public static void register(Object object) {
+    public void register(Object object) {
         bus.register(object);
     }
 
-    public static void unregister(Object object) {
+    public void unregister(Object object) {
         bus.unregister(object);
     }
 
-    public static void post(Object event) {
+    public void post(Object event) {
         bus.post(event);
     }
     //endredion Otto

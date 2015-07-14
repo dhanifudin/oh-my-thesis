@@ -1,31 +1,35 @@
+var constant = require('./constant');
+
 var Simulator = function() {};
 
-/* Simulator.prototype.generate = function(mode, input, output) { */
-/*   switch(mode) { */
-/*     case 'simple': */
-/*       generator.simple(input, output); */
-/*       break; */
-/*     case 'area': */
-/*       generator.area(code1, code2, distance); */
-/*       break; */
-/*     default: */
-/*       console.log('Invalid mode'); */
-/*   } */
-/* }; */
-
-Simulator.prototype.simulate = function(mode, user, input, output) {
+Simulator.prototype.publish = function(mode, user, number, output) {
   switch(mode) {
-    case 'simple':
-      var simple = require('./simple')(user, output);
-      simple.simulate(input, output);
+    case constant.mode.SIMPLE:
+      var simple = require('./simple')(user);
+      simple.publish(number, output);
       break;
-    case 'enhanced':
-      var enhanced = require('./enhanced')(user, output);
-      enhanced.simulate(input, output);
+    case constant.mode.ADAPTIVE:
+      var adaptive = require('./adaptive')(user);
+      adaptive.publish(number, output);
       break;
     default:
       console.log('Invalid mode');
   }
 };
+
+Simulator.prototype.subscribe = function(mode, user, number, output) {
+  switch(mode) {
+    case constant.mode.SIMPLE:
+      var simple = require('./simple')(user);
+      simple.subscribe(number, output);
+      break;
+    case constant.mode.ADAPTIVE:
+      var adaptive = require('./adaptive')(user);
+      adaptive.subscribe(number, output);
+      break;
+    default:
+      console.log('Invalid mode');
+  }
+}
 
 module.exports = new Simulator();

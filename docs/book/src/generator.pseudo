@@ -1,0 +1,12 @@
+read configuration of data
+find center location of start position area
+find center location of end position area
+find distance between two location
+find bearing between two location
+set initial current distance
+while current distance < distance two location
+  find next location (start location, bearing, current distance)
+  add destination into result
+  increment current distance
+
+write result into file

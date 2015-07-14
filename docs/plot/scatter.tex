@@ -1,0 +1,19 @@
+\documentclass[12pt, a4paper, openright]{scrbook}
+
+\begin{document}
+
+\begin{tikzpicture}
+\begin{axis}[
+    enlargelimits=false,
+]
+\addplot+[
+    only marks,
+    scatter,
+    mark=halfcircle*,
+    mark size=2.9pt]
+table[meta=ma]
+{data/scatter.dat};
+\end{axis}
+\end{tikzpicture}
+
+\end{document}

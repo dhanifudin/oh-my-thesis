@@ -6,6 +6,7 @@ import android.widget.EditText;
 import butterknife.InjectView;
 import dhanifudin.ohmytrack.Application;
 import dhanifudin.ohmytrack.R;
+import dhanifudin.ohmytrack.model.entity.Preferences;
 import dhanifudin.ohmytrack.ui.common.BaseActivity;
 import dhanifudin.ohmytrack.ui.common.BaseFragment;
 import dhanifudin.ohmytrack.ui.login.LoginPresenter;
@@ -25,14 +26,14 @@ public class LoginFragment extends BaseFragment implements LoginView {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new LoginPresenterImpl(getActivity(), this);
-        Application.register(this);
+        this.presenter = new LoginPresenterImpl(getActivity(), this);
+        this.application.register(this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Application.unregister(this);
+        this.application.unregister(this);
     }
 
     @Override

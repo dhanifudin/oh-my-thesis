@@ -6,14 +6,8 @@ import org.eclipse.paho.client.mqttv3.IMqttToken;
 /**
  * Created by icub on 5/5/15.
  */
-public class ConnectListener implements IMqttActionListener {
-    @Override
-    public void onSuccess(IMqttToken iMqttToken) {
+public interface ConnectListener extends IMqttActionListener {
 
-    }
+    public void onUsernameError();
 
-    @Override
-    public void onFailure(IMqttToken iMqttToken, Throwable throwable) {
-
-    }
 }

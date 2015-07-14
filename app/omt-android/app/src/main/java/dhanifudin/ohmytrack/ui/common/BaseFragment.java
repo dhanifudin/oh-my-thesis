@@ -1,11 +1,16 @@
 package dhanifudin.ohmytrack.ui.common;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.*;
 import butterknife.ButterKnife;
+import dhanifudin.ohmytrack.Application;
 import dhanifudin.ohmytrack.R;
+import dhanifudin.ohmytrack.model.entity.Preferences;
+import dhanifudin.ohmytrack.ui.fragment.LoginFragment;
+import dhanifudin.ohmytrack.ui.fragment.SettingFragment;
 import timber.log.Timber;
 
 /**
@@ -13,10 +18,22 @@ import timber.log.Timber;
  */
 public abstract class BaseFragment extends Fragment {
 
+    protected BaseActivity activity;
+    protected Application application;
+    protected Preferences preferences;
+
+//    public BaseFragment(BaseActivity activity, Preferences preferences) {
+//        this.activity = activity;
+//        this.preferences = preferences;
+//    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setHasOptionsMenu(this.isHasOptionsMenu());
+        this.activity = (BaseActivity) getActivity();
+        this.preferences = activity.getPreferences();
+        this.application = (Application) getActivity().getApplication();
         Timber.d(getClass().getCanonicalName() + " created....");
     }
 
@@ -45,11 +62,12 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_map:
-                return true;
-            case R.id.action_track:
-                return true;
             case R.id.action_settings:
+                activity.setFragment(SettingFragment.class, true);
+                return true;
+            case R.id.action_logout:
+                preferences.clearLoginSession();
+                activity.setFragment(LoginFragment.class);
                 return true;
         }
         return super.onOptionsItemSelected(item);

@@ -8,8 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.InjectView;
 import dhanifudin.ohmytrack.Application;
+import dhanifudin.ohmytrack.Constant;
 import dhanifudin.ohmytrack.R;
 import dhanifudin.ohmytrack.ui.common.BaseFragment;
+import dhanifudin.ohmytrack.ui.dialog.TrackDialog;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
@@ -21,12 +23,13 @@ public class MapFragment extends BaseFragment {
     @InjectView(R.id.map)
     MapView map;
 
+    private TrackDialog trackDialog;
     private IMapController controller;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Application.register(this);
+        this.application.register(this);
     }
 
     @Nullable
@@ -37,7 +40,7 @@ public class MapFragment extends BaseFragment {
         this.map.setBuiltInZoomControls(true);
         this.controller = this.map.getController();
         this.controller.setZoom(15);
-        this.controller.setCenter(new GeoPoint(52.221, 6.893));
+        this.controller.setCenter(new GeoPoint(Constant.CENTER_LATITUDE, Constant.CENTER_LONGITUDE));
         return view;
     }
 
@@ -49,13 +52,14 @@ public class MapFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Application.unregister(this);
+        this.application.unregister(this);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add:
+                showDialog();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -69,5 +73,15 @@ public class MapFragment extends BaseFragment {
     @Override
     protected int getMenuLayoutResource() {
         return R.menu.menu_map;
+    }
+
+    @Override
+    protected boolean isHasMoreMenu() {
+        return true;
+    }
+
+    private void showDialog() {
+        trackDialog = new TrackDialog();
+        trackDialog.show(activity.getSupportFragmentManager(), "Track Dialog");
     }
 }

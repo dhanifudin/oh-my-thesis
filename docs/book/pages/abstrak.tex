@@ -1,7 +1,7 @@
 \noindent
 \changeSize{\JudulIndonesia}
 
-\noindent 
+\noindent
 \begin{table}
     \centering
     \begin{tabular}{l l l}
@@ -23,20 +23,29 @@ posisi maupun aktifitasnya. Proses \tracking~yang ideal dapat mengirimkan
 perubahan lokasi secara terus-menerus dalam kondisi yang berubah-ubah. Namun
 demikian sistem \tracking~seperti ini umumnya kurang efisien karena dapat
 menghabiskan \f{resource} baik daya maupun kebutuhan \f{bandwidth} jaringan
-sehingga membutuhkan proses yang lebih efisien.
+sehingga membutuhkan proses yang lebih efisien. Sistem \tracking~tradisional
+kurang efisien untuk dikembangkan menjadi infrastruktur \tracking~multi target
+pada perangkat bergerak dimana baik pengamat ataupun obyek yang diamati lebih
+dari satu. Dibutuhkan mekanisme komunikasi yang \f{loosely coupled}.
 
-Sistem \tracking~tradisional kurang efisien untuk dikembangkan menjadi
-infrastruktur \tracking~multi target pada perangkat bergerak dimana baik
-pengamat ataupun obyek yang diamati lebih dari satu. Dibutuhkan mekanisme
-komunikasi yang \f{loosely coupled}. \PubSub~memiliki kelebihan
-\decoupling~pada waktu, ruang dan sinkronisasi. Kelebihan interaksi seperti
-ini, menjadikan sistem \pubsub~ideal dalam komunikasi skala besar yang dinamis.
-Efisiensi lain dapat dilakukan dengan melakukan \tracking~secara adaptif dan
-bersifat \f{context awareness}. Pembaruan lokasi berdasarkan pada kondisi
-\tracking~yang diberikan oleh pengamat serta kondisi objek pengamatan secara
-adaptif.
+Dalam penelitian ini, peneliti mengembangkan sebuah mekanisme \tracking~multi
+target dengan arsitektur \pubsub~untuk menghemat penggunaan \bandwidth~dan
+\resource. Mekanisme perbaikan dilakukan dengan memperhatikan ketertarikan
+konten. Komunikasi data hanya dilakukan untuk konten informasi lokasi yang
+diperlukan berdasarkan ketertarikan konten. Hasil penelitian menunjukkan bahwa
+\tracking~multi target secara adaptif didapatkan efisiensi untuk performa. Hal
+ini ditunjukkan dengan penghematan \bandwidth~sebesar 44 - 60 \%, penghematan CPU
+sebesar 57 - 71 \% serta efisiensi \latency~17 - 73 \%.
 
-\noindent \\ 
-\bo{Kata kunci}: \Tracking~Multi Target, \PubSub, \f{Context Awareness} 
+% \PubSub~memiliki kelebihan
+% \decoupling~pada waktu, ruang dan sinkronisasi. Kelebihan interaksi seperti
+% ini, menjadikan sistem \pubsub~ideal dalam komunikasi skala besar yang dinamis.
+% Efisiensi lain dapat dilakukan dengan melakukan \tracking~secara adaptif dan
+% bersifat \f{context awareness}. Pembaruan lokasi berdasarkan pada kondisi
+% \tracking~yang diberikan oleh pengamat serta kondisi objek pengamatan secara
+% adaptif.
+
+\noindent \\
+\bo{Kata kunci}: \Tracking~Multi Target, \PubSub, efisiensi.
 
 \cleardoublepage

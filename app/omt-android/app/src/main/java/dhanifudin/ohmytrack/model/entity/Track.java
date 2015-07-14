@@ -1,4 +1,4 @@
-package dhanifudin.ohmytrack.model;
+package dhanifudin.ohmytrack.model.entity;
 
 /**
  * Created by icub on 5/7/15.

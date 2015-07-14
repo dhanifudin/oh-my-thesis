@@ -21,20 +21,21 @@ public class LocationService extends Service implements LocationListener {
     public static final int LOCATION_UPDATE_FREQUENCY = 1000 * 6;
     public static final int LOCATION_UPDATE_DISTANCE = 1;
 
+    private Application application;
     private LocationManager manager;
     private Location currentLocation;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Application.register(this);
+        application.register(this);
         Timber.d("Location service created");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Application.unregister(this);
+        application.unregister(this);
         Timber.d("Location service destroyed");
     }
 
@@ -58,7 +59,7 @@ public class LocationService extends Service implements LocationListener {
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
         Timber.d(String.format("Location found, latitude: %f, longitude: %f", latitude, longitude));
-        Application.post(new LocationEvent("Test", latitude, longitude));
+        application.post(new LocationEvent("Test", latitude, longitude));
     }
 
     @Override

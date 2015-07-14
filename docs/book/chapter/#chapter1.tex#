@@ -1,0 +1,162 @@
+\chapter{\babSatu}
+
+% Latar Belakang {{{ %
+\section{Latar Belakang}
+
+Perkembangan teknologi informasi dan komunikasi yang cepat, terutama dalam
+internet serta telepon seluler telah mengubah cara orang berinteraksi dengan
+lingkungannya. Telepon seluler secara revolusioner memungkinkan orang untuk
+berkomunikasi kapan saja dan di mana saja. Adanya hubungan ini menyebabkan perlu
+adanya konsep berbagi informasi. Informasi-informasi ini dapat berupa data
+profil pribadi, berkas, lokasi, suhu lingkungan yang didapatkan melalui sensor
+dan lain-lain.
+
+Fitur perangkat bergerak sudah dilengkapi dengan kemampuan untuk penentuan
+lokasi memanfaatkan GPS (\GPS). Fitur ini tidak hanya digunakan secara lokal
+pada perangkat tersebut, namun dapat juga dimanfaatkan secara \f{remote} seperti
+halnya dalam \f{GPS tracking}. Agar penggunaan menjadi bermanfaat, proses
+\tracking~haruslah ramah energi untuk mencegah konsumsi energi berlebih pada
+perangkat bergerak. Optimasi efisiensi pada perangkat bergerak menjadi isu yang
+hangat dengan berbagai macam pendekatan. Seperti halnya optimasi menurunkan
+konsumsi energi dalam protokol jaringan serta optimasi pada level sistem
+operasi.
+
+Suatu proses \tracking~dikatakan ideal, apabila dapat mengirimkan perubahan
+lokasi secara \f{robust} dalam kondisi yang berubah-ubah. Beberapa penelitian
+yang ada (Civilis dkk, 2005) (Leonhardi dkk, 2001) (Leonhardi dkk, 2002) telah
+mengusulkan adanya \tracking~secara dinamis untuk memperbaharui lokasi.
+\tracking~secara dinamis meminimalkan beban pada server dengan menurunkan jumlah
+pembaharuan, tetapi masih mempunyai nilai akurasi yang relevan.  Leonhardi dkk
+(Leonhardi dkk, 2001) mempelajari \tracking~berbasiskan waktu serta jarak yang
+membutuhkan akurasi pada benda bergerak. Simulasi dilakukan dengan melakukan
+sejumlah pembaharuan pada beberapa teknik \tracking~untuk mengukur akurasinya.
+
+EnTracked (Kjaergaard dkk, 2010), adalah sebuah sistem \tracking~yang efisien
+pada lingkungan perangkat bergerak untuk target tunggal. Sistem ini dapat
+mendeteksi kapan diperlukan pembaharuan lokasi memanfaatkan GPS atau tidak
+secara adaptif. Deteksi pergerakan memanfaatkan sensor \acc~yang tertanam pada
+perangkat bergerak. Sensor GPS digunakan pada kondisi bergerak atau telah
+melewati batas waktu yang ditentukan melalui \f{error model}. Selebihnya lokasi
+akan diestimasi menggunakan estimasi kecepatan pergerakan. Hasil dari
+\tracking~ini akan disimpan pada \f{EnTracked Server}, untuk kemudian dikirimkan
+ke klien yang membutuhkan.
+
+Mekanisme seperti ini, kurang efisien untuk menjadi infrastruktur
+\tracking~multi target pada perangkat bergerak. Komunikasi \f{point-to-point}
+dan \f{synchronous} menyebabkan aplikasi menjadi kaku dan statis, serta membuat
+pengembangan skala besar yang dinamis menjadi rumit (Eugster dkk, 2003). Untuk
+mengurangi beban pada aplikasi, diperlukan skema komunikasi yang bersifat
+\f{loosely coupled}. \PubSub~memiliki kelebihan \decoupling~pada waktu, ruang
+dan sinkronisasi. Interaksi seperti ini, menjadikan sistem \pubsub~ideal dalam
+komunikasi skala besar yang dinamis.
+
+\PubSub~merupakan sebuah paradigma interaksi dimana \subscriber~mempunyai suatu
+ketertarikan berupa suatu \event, untuk setiap \event~yang cocok dengan
+ketertarikan akan dinotifikasi oleh \publisher~(Eugster dkk, 2003). Banyak
+skema untuk menentukan suatu \event~yang menjadi ketertarikan \subscriber. Dua
+skema yang banyak digunakan adalah \topicbased~serta \contentbased. Skema
+\topicbased~bersifat statis dan primitif, dapat diimplementasikan secara
+efisien. Lain halnya dengan \contentbased~yang bersifat ekspresif, tetapi
+sebagai konsekuensinya dibutuhkan suatu komponen \filtering~yang mempunyai
+kompleksitas yang tinggi.
+
+Adaptasi \pubsub~pada lingkungan perangkat bergerak dipaparkan oleh Huang dkk
+(Huang dkk, 2004). Dalam penelitiannya dipaparkan beberapa arsitektur
+\pubsub~dari yang paling sederhana hingga terdistribusi. Sistem
+\f{publish-subscribe} dapat secara dinamis mengirimkan \event~kepada
+\subscriber. Dibutuhkan \f{event queues} serta \f{broker handoff protocol} untuk
+membangun konsep \pubsub~dalam lingkungan perangkat bergerak. Penelitian ini
+mendasari \f{Mobile XSiena}, suatu \f{platform} yang merupakan pengembangan
+\f{XSiena} \pubsub~berbasis konten (Salvador dkk, 2010).
+
+Salah satu fitur utama dari \f{publish-subscribe} dapat melakukan
+\f{content-filtering}. Dengan adanya ini pengguna hanya mendapatkan pembaharuan
+yang diinginkan sesuai dengan ketertarikan. Beban pada sisi klien dapat
+berkurang, karena klien tidak perlu melakukan mekanisme \f{polling} ke server
+pada waktu tertentu. Pada sistem \pubsub~tradisional, \publisher~akan tetap
+mengirimkan \event~kepada server, walaupun tidak ada \subscription~terhadap
+\event~tersebut.
+
+Penentuan metode pengambilan lokasi pada \tracking, mempengaruhi dalam efisiensi
+energi.  Metode dengan sensor GPS, memberikan nilai presisi lebih tinggi dari
+metode lain serta membutuhkan energi yang lebih tinggi juga. Oleh karena itu
+dibutuhkan sistem \tracking~yang memperhatikan \context~\aware.  \Context~berisi
+informasi yang dapat digunakan untuk menggambarkan situasi dari entitas. Entitas
+dapat berupa orang, tempat atau obyek yang dianggap relevan untuk interaksi
+antara pengguna dan aplikasi (Hong dkk, 2009).  Pada sistem EnTracked, penentuan
+lokasi menggunakan sensor GPS hanya digunakan ketika obyek bergerak.
+
+Dari uraian di atas, dapat diketahui bahwa kelebihan \pubsub~dapat dimanfaatkan
+dalam proses pembaharuan \tracking~pada lingkungan skala besar yang dinamis.
+Dengan adanya ini sisi client cukup mendaftarkan ketertarikan sebagai
+\event~kepada server. Pengiriman informasi lokasi pada \tracking~secara
+sekuensial, menyebabkan perlu adanya penentuan lokasi yang efisien tetapi tetap
+akurat. Dengan adanya sistem yang bersifat \context~\aware, sistem dapat secara
+adaptif menentukan kebutuhan tingkat presisi informasi. Karakteristik
+\publisher~yang tetap mengirimkan \event~kepada server dapat membebani sistem,
+terutama dalam proses \f{content-filtering}. Oleh karena itu, dalam penelitian
+ini diajukan suatu metode untuk mengoptimalkan proses \tracking~dengan sifat
+\context~\aware~pada arsitektur \pubsub.  Integrasi sistem \tracking~akan
+dilakukan pada perangkat bergerak yang memiliki sensor GPS di dalamnya.
+
+% }}} Latar Belakang %
+
+% Perumusan Masalah {{{ %
+\section{Perumusan Masalah}
+
+Permasalahan yang dibahas dalam penelitian ini, yaitu:
+
+\begin{enumerate}[noitemsep, nolistsep]
+  \item Bagaimana memodelkan skema \tracking~multi target dengan model komunikasi
+    \pubsub~dalam lingkungan bergerak.
+  \item Bagaimana menangani \query~\tracking~multi target dalam lingkungan
+    perangkat bergerak yang bersifat \unreliable.
+  \item Bagaimana melakukan optimasi \f{update protocol} pada sistem
+    \tracking~multi target secara adaptif untuk efisiensi trafik komunikasi.
+\end{enumerate}
+
+% }}} Perumusan Masalah %
+
+% Batasan Penelitian {{{ %
+\section{Batasan Penelitian}
+
+Dalam penelitian ini, batasan masalah yang dibahas diuraikan sebagai berikut:
+
+\begin{enumerate}[noitemsep, nolistsep]
+  \item Sistem \PubSub~menggunakan arsitektur tunggal (terpusat).
+  \item Pemodelan lokasi \tracking~hanya dilakukan untuk wilayah kampus Insitut
+    Teknologi Sepuluh Nopember yang terbagi menjadi tiga level hirarki.
+  \item Walaupun masalah keamanan menjadi masalah utama dalam
+    komunikasi jaringan, hal ini belum ditekankan pada penelitian ini.
+\end{enumerate}
+% }}} Batasan Penelitian %
+
+% Tujuan dan Manfaat Penelitian {{{ %
+\section{Tujuan dan Manfaat Penelitian}
+
+Tujuan penelitian yang dapat dicapai dalam penelitian ini dapat diuraikan sebagai
+berikut:
+\begin{enumerate}[noitemsep, nolistsep]
+  \item Membangun sistem \tracking~multi target berbasis \pubsub~dalam lingkungan
+    bergerak.
+  \item Membangun \f{update protocol} yang bersifat adaptif berdasarkan
+    \context~pengguna pada sistem \tracking~multi target.
+  \item Mengimplementasikan dan menguji secara nyata sistem \tracking~multi
+    target dalam lingkungan bergerak.
+\end{enumerate}
+
+Sedangkan manfaat penelitian ini terciptanya sistem \tracking~multi target
+secara lebih efisien pada lingkungan bergerak. Efisiensi dalam lingkungan
+bergerak menjadi hal utama dikarenakan keterbatasan \f{resource} baik daya
+maupun kebutuhan jaringan.
+
+% }}} Tujuan dan Manfaat Penelitian %
+
+% Kontribusi Penelitian {{{ %
+\section{Kontribusi Penelitian}
+
+Kontribusi penelitian ini adalah pembangunan suatu mekanisme interaksi yang
+memfasilitasi \tracking~multi target untuk multi user dengan efisiensi pada
+proses \f{update protocol} secara adaptif.
+
+% }}} Kontribusi Penelitian %

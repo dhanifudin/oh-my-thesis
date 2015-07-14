@@ -1,0 +1,129 @@
+#!/usr/bin/env python
+
+import sys, getopt, json, csv
+
+class Log:
+  def __init__(self, id, pid, user, lat, lng, sent, arrived):
+    self.id = id
+    self.pid = pid
+    self.user = user
+    self.lat = lat
+    self.lng = lng
+    self.sent = sent
+    self.arrived = arrived
+    self.diff = arrived - sent
+
+  def __eq__(self, other):
+    return (self.id == other.id and \
+            self.pid == other.pid and \
+            self.user == other.user
+            )
+
+  def __hash__(self):
+    return hash(str(self))
+
+  def __str__(self):
+    return 'Id: %d, Pid: %s, User: %s, Lat: %d, Lng: %d, Sent: %d, Arrived: %d' % \
+        (self.id, self.pid, self.user, self.lat, self.lng, self.sent, self.arrived)
+
+def read_log(input):
+  data = []
+  filepath = './log/lattency/%s.log' % (input)
+  file = open(filepath)
+  for line in iter(file):
+    item = json.loads(line)
+    if (item.has_key('user')):
+      data.append(Log(
+        item['id'],
+        item['pid'],
+        item['user'],
+        item['lat'],
+        item['lng'],
+        item['sent'],
+        item['arrive']
+      ))
+  file.close()
+  return data
+
+def filter_log(simple, adaptive):
+  result = []
+  for item in adaptive:
+    temp = filter(lambda x: x.id == item.id, simple)
+    for t in temp:
+      result.append(t)
+    # if len(temp) == 1:
+    #   result.append(temp[0])
+    # else:
+    #   for t in temp:
+    #     print t
+    #   print 'Duplicate Entry'
+  return set(result)
+
+  return result
+
+def write_csv(output, data):
+  filepath = './log/lattency/%s.csv' % (output)
+  with open(filepath, 'wb') as csvfile:
+    writer = csv.writer(
+      csvfile,
+      delimiter=',',
+      quotechar='"',
+      quoting=csv.QUOTE_MINIMAL
+    )
+
+    writer.writerow(['Id', 'User', 'Lat', 'Lng', 'Sent', 'Arrived', 'Diff'])
+    for row in data:
+      writer.writerow([
+        row.id,
+        row.user,
+        row.lat,
+        row.lng,
+        row.sent,
+        row.arrived,
+        row.diff
+      ])
+
+def help():
+  return \
+      'Usage:\n\
+      -s --simple\n\
+      -a --adaptive\n\
+      -o --output'
+
+def main(argv):
+  try:
+    opts, args = getopt.getopt(
+      argv,
+      'hs:a:o:', [
+        'simple=',
+        'adaptive=',
+        'output='
+      ]
+    )
+  except getopt.GetoptError, e:
+    print e
+    sys.exit(2)
+
+  simple, adaptive, output = '', '', ''
+  for opt, arg in opts:
+    if opt == '-h':
+      print help()
+      sys.exit()
+    elif opt in ('-s', '--simple'):
+      simple = arg
+    elif opt in ('-a', '--adaptive'):
+      adaptive = arg
+    elif opt in ('-o', '--output'):
+      output = arg
+
+  if '' not in (simple, adaptive, output):
+    simple_data = read_log(simple)
+    adaptive_data = read_log(adaptive)
+    result = filter_log(simple_data, adaptive_data)
+    write_csv(output, result)
+    write_csv(adaptive, adaptive_data)
+  else:
+    print help()
+
+if __name__ == '__main__':
+  main(sys.argv[1:])

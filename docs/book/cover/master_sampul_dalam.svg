@@ -14,7 +14,7 @@
    height="1052.3622"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.2 r9819"
+   inkscape:version="0.48.5 r10040"
    sodipodi:docname="master_sampul_dalam.svg">
   <defs
      id="defs4" />
@@ -26,16 +26,16 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
-     inkscape:cx="707.96387"
-     inkscape:cy="610.34459"
+     inkscape:cx="340.61559"
+     inkscape:cy="206.42971"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1436"
-     inkscape:window-height="856"
+     inkscape:window-width="817"
+     inkscape:window-height="862"
      inkscape:window-x="4"
      inkscape:window-y="0"
-     inkscape:window-maximized="1"
+     inkscape:window-maximized="0"
      showguides="true"
      inkscape:guide-bbox="true"
      units="mm" />
@@ -86,12 +86,17 @@
          x="141.8026"
          y="631.19757"
          style="font-size:18px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;font-family:Trebuchet MS;-inkscape-font-specification:Trebuchet MS Bold"
-         id="tspan3807">ADAPTIF TRACKING MULTI TARGET BERBASIS</tspan><tspan
+         id="tspan3807">EFISIENSI TRACKING MULTI TARGET </tspan><tspan
          sodipodi:role="line"
          x="141.8026"
          y="649.19757"
          style="font-size:18px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;font-family:Trebuchet MS;-inkscape-font-specification:Trebuchet MS Bold"
-         id="tspan3442">PUBLISH-SUBSCRIBE PADA LINGKUNGAN BERGERAK</tspan></text>
+         id="tspan3399">DENGAN MODEL INTERAKSI PUBLISH-SUBSCRIBE</tspan><tspan
+         sodipodi:role="line"
+         x="141.8026"
+         y="667.19757"
+         style="font-size:18px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;font-family:Trebuchet MS;-inkscape-font-specification:Trebuchet MS Bold"
+         id="tspan3442">ADAPTIF PADA LINGKUNGAN BERGERAK</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:100%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
@@ -150,7 +155,7 @@
          x="141.74986"
          y="945.9165"
          id="tspan3797"
-         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;font-family:Trebuchet MS;-inkscape-font-specification:Trebuchet MS">2013</tspan></text>
+         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;font-family:Trebuchet MS;-inkscape-font-specification:Trebuchet MS">2015</tspan></text>
     <flowRoot
        xml:space="preserve"
        id="flowRoot3799"
@@ -194,13 +199,13 @@
            x="112.14286"
            y="596.64789" /></flowRegion><flowPara
          id="flowPara3825" /></flowRoot>    <image
-       sodipodi:absref="/Users/icub/Versioning/git/proposal/pics/logo.png"
+       sodipodi:absref="/Users/icub/Documents/oh-my-thesis/docs/book/cover/logo.png"
        xlink:href="logo.png"
-       y="70.866119"
-       x="141.73228"
-       id="image3026"
+       width="227.91272"
        height="124.01575"
-       width="227.91272" />
+       id="image3026"
+       x="141.73228"
+       y="70.866119" />
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
@@ -210,6 +215,6 @@
        sodipodi:linespacing="125%"
        transform="translate(0,2.5390623e-6)"><tspan
          sodipodi:role="line"
-         id="tspan3438"></tspan></text>
+         id="tspan3438" /></text>
   </g>
 </svg>
