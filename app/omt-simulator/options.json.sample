@@ -1,7 +1,10 @@
 {
   "client": {
     "host": "localhost",
-    "delay": 5000
+    "delay": 2000,
+    "interval": 1000,
+    "time": 300000,
+    "wait": 10000
   },
   "publish": {
     "qos": 0,
